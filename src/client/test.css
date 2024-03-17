@@ -1,5 +1,4 @@
 body{
-	background-color: white;
 	color: cornsilk;
 	font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -26,11 +25,12 @@ p{
 	background-color: black;
 }
 .nav-content{
-	border: 2px solid green;
+	border: none;
+	position: relative;
 }
 .nav-sidebar{
-	border: 2px solid brown;
 	background-color: #383838;
+	position: relative;
 }
 .nav-sidebar-active{
 	background-color: #484848;
@@ -55,8 +55,8 @@ p{
 
 .button-floating{
 	position: absolute;
-	height: 100px;
-  	width: 100px;
-  	border-radius: 50%;
-  	background-color: #EEEEEE;
+	margin: 20px;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
 }
