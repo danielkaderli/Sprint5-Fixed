@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class AdjacencyList{
 
-    Map<Integer, Node> graph= new HashMap<>();
+    private Map<Integer, Node> graph= new HashMap<>();
 
     public void addNode(Node newNode){
         this.graph.put(newNode.getID(), newNode);
@@ -16,6 +16,7 @@ public class AdjacencyList{
     public Node findNode(int targetID){
         return this.graph.get(targetID);
     }
+    public Map<Integer,Node> getAdjacencyList(){return this.graph;}
 
 }
 

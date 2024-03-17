@@ -1,6 +1,71 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Iterator;
 
 public class BuildGraph {
+
+    public AdjacencyList createGraph(String graphFile)  {
+        FileReader graph = new FileReader(graphFile);
+
+        AdjacencyList adjList=new AdjacencyList();
+        //placeholders until file reading is set up
+        int nodeID=0;
+        int floor=0;
+        Type type=Type.FINAL;
+        int edgeID=0;
+        int weight=0;
+        //for each line, create or find Node, create Edge, add it to adjList
+        if(adjList.findNode(/*ID from FILE*/nodeID)==null){
+            Node node = new Node(nodeID,floor, type);
+            //check if a node for the edge exists and add the node and edge
+            if (adjList.findNode(/*EdgeID from file*/ edgeID)!=null){
+                Edge edge = new Edge(adjList.findNode(edgeID),weight);
+                node.addEdge(edge);
+            }
+            else{
+                Node edgePlaceholder = new Node(edgeID,-99,Type.FINAL);
+                adjList.addNode(edgePlaceholder);
+                Edge edge = new Edge(edgePlaceholder,weight);
+                node.addEdge(edge);
+            }
+
+        }
+
+        else{
+            if (adjList.findNode(nodeID).getFloor()==-99){
+                Node node = adjList.findNode(nodeID);
+                node.setFloor(floor);
+                node.setType(type);
+                //check if a node for the edge exists
+                if (adjList.findNode(/*EdgeID from file*/ edgeID)!=null){
+                    Edge edge = new Edge(adjList.findNode(edgeID),weight);
+                    node.addEdge(edge);
+                }
+                else{
+                    Node edgePlaceholder = new Node(edgeID,-99,Type.FINAL);
+                    adjList.addNode(edgePlaceholder);
+                    Edge edge = new Edge(edgePlaceholder,weight);
+                    node.addEdge(edge);
+                }
+            }
+            else{
+                Node node = adjList.findNode(nodeID);
+                //check if a node for the edge exists
+                if (adjList.findNode(/*EdgeID from file*/ edgeID)!=null){
+                    Edge edge = new Edge(adjList.findNode(edgeID),weight);
+                    node.addEdge(edge);
+                }
+                else{
+                    Node edgePlaceholder = new Node(edgeID,-99,Type.FINAL);
+                    adjList.addNode(edgePlaceholder);
+                    Edge edge = new Edge(edgePlaceholder,weight);
+                    node.addEdge(edge);
+                }
+            }
+        }
+
+        return adjList;
+    }
     public void TransitionWeight(Node transition){
         //placeholder values
         int floorMin=99;
