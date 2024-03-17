@@ -1,10 +1,9 @@
 
 import javax.lang.model.type.NullType;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 
 public class AdjacencyList{
@@ -76,35 +75,52 @@ public class AdjacencyList{
             currEdge.setWeight(currWeight*(diff*3));
         }
     }
-    public void createGraph(String graphFile)  {
-        FileReader graph = new FileReader(graphFile);
+    public void createGraph(String graphFile) {
+        Scanner scan = null;
+        try {
+            scan = new Scanner(new File(Objects.requireNonNull(getClass().getClassLoader().getResource(graphFile)).getFile()));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        scan.useDelimiter(",");
+        int nID, floor, eID, weight, i;
+        Type type;
+        ArrayList<FileEntry> fileEntries = new ArrayList<>();
+
+        while (scan.hasNext()) {
+            nID = Integer.parseInt(scan.next());
+            floor = Integer.parseInt(scan.next());
+            type = Type.valueOf(scan.next());
+            eID = Integer.parseInt(scan.next());
+            weight = Integer.parseInt(scan.next());
+            fileEntries.add(new FileEntry(nID, floor, type, eID, weight));
+        }
 
 
         //placeholders until file reading is set up
-        FileEntry currEntry=new FileEntry(0,0,Type.FINAL, 0,0);
-        //for each line, create or find Node, create Edge, add it to adjList
-        if(this.findNode(/*ID from FILE*/currEntry.NodeID())==null){
-            Node node = new Node(currEntry.NodeID(),currEntry.Floor(), currEntry.type());
-            addEdge(node, currEntry);
 
-        }
-
-        else{
-            if (this.findNode(currEntry.NodeID()).getFloor()==-99){
-                Node node = this.findNode(currEntry.NodeID());
-                node.setFloor(currEntry.Floor());
-                node.setType(currEntry.type());
-                //check if a node for the edge exists
+        for (int it = 0; it < fileEntries.size(); it++) {
+            FileEntry currEntry=fileEntries.get(it);
+            //for each line, create or find Node, create Edge, add it to adjList
+            if (this.findNode(/*ID from FILE*/currEntry.NodeID()) == null) {
+                Node node = new Node(currEntry.NodeID(), currEntry.Floor(), currEntry.type());
                 addEdge(node, currEntry);
             }
-            else{
-                Node node = this.findNode(currEntry.NodeID());
-                //check if a node for the edge exists
-                addEdge(node,currEntry);
+            else {
+                if (this.findNode(currEntry.NodeID()).getFloor() == -99) {
+                    Node node = this.findNode(currEntry.NodeID());
+                    node.setFloor(currEntry.Floor());
+                    node.setType(currEntry.type());
+                    //check if a node for the edge exists
+                    addEdge(node, currEntry);
+                } else {
+                    Node node = this.findNode(currEntry.NodeID());
+                    //check if a node for the edge exists
+                    addEdge(node, currEntry);
+                }
             }
         }
     }
-
 }
 
 

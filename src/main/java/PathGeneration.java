@@ -12,6 +12,5 @@ public class PathGeneration {
         this.end=e;
     }
 
-    /* TRANSITION NODE EXTRA WEIGHT */
 
 }
