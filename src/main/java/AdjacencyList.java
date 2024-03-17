@@ -24,7 +24,7 @@ public class AdjacencyList{
     //check if a node for the edge exists and add the node and edge
     private void addEdge(Node node, FileEntry currEntry){
 
-        if (this.findNode(/*EdgeID from file*/ currEntry.EdgeID())!=null){
+        if (this.findNode(currEntry.EdgeID())!=null){
             Edge edge = new Edge(this.findNode(currEntry.EdgeID()),currEntry.Weight());
             node.addEdge(edge);
         }
