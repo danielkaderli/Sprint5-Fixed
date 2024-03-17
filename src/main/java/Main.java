@@ -4,7 +4,7 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args)  {
         //getClass().getClassLoader().getResourceAsStream("filename")
-        String graphFile= "./build/resources/main/fakeTownHallMap.csv";
+        String graphFile= "./build/resources/main/fakeTownHall.txt";
         AdjacencyList graph = new AdjacencyList();
         graph.createGraph(graphFile);
         graph.UpdateWeights();

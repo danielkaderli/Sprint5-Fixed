@@ -1,9 +1,6 @@
 
 import javax.lang.model.type.NullType;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -78,49 +75,49 @@ public class AdjacencyList{
         }
     }
     public void createGraph(String graphFile) {
-        Scanner scan;
-        try {
-            scan = new Scanner(new File(graphFile), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        scan.useDelimiter(",");
-        int nID, floor, eID, weight;
-        Type type;
-        ArrayList<FileEntry> fileEntries = new ArrayList<>();
-
-        while (scan.hasNext()) {
-            nID = Integer.parseInt(scan.next().trim());
-            floor = Integer.parseInt(scan.next().trim());
-            type = Type.valueOf(scan.next().trim());
-            eID = Integer.parseInt(scan.next().trim());
-            weight = Integer.parseInt(scan.next().trim());;
-            fileEntries.add(new FileEntry(nID, floor, type, eID, weight));
-        }
-        scan.close();
-
-
-        //placeholders until file reading is set up
+       String line="";
+       String delim=",";
+       ArrayList<FileEntry> fileEntries = new ArrayList<>();
+       try{
+           BufferedReader file = new BufferedReader((new InputStreamReader(new FileInputStream(graphFile), StandardCharsets.UTF_8)));
+           while((line=file.readLine())!=null){
+               String[] entry= line.split(delim);
+               fileEntries.add(new FileEntry(
+                       /* NodeID */ Integer.parseInt(entry[0]),
+                       /* Floor  */ Integer.parseInt(entry[1]),
+                       /* Type   */ Type.valueOf(entry[2]),
+                       /* EdgeID */ Integer.parseInt(entry[3]),
+                       /* Weight */ Integer.parseInt(entry[4])));
+           }
+       }
+       catch (IOException e) {
+           throw new RuntimeException(e);
+       }
 
         for (int i = 0; i < fileEntries.size(); i++) {
             FileEntry currEntry=fileEntries.get(i);
             //for each line, create or find Node, create Edge, add it to adjList
-            if (this.findNode(/*ID from FILE*/currEntry.NodeID()) == null) {
-                Node node = new Node(currEntry.NodeID(), currEntry.Floor(), currEntry.type());
-                addEdge(node, currEntry);
+            Node node;
+            if (this.findNode(currEntry.NodeID()) == null) {
+                node = new Node(currEntry.NodeID(), currEntry.Floor(), currEntry.type());
+                this.addNode(node);
+                this.addEdge(node, currEntry);
             }
             else {
                 if (this.findNode(currEntry.NodeID()).getFloor() == -99) {
-                    Node node = this.findNode(currEntry.NodeID());
+                    node = this.findNode(currEntry.NodeID());
                     node.setFloor(currEntry.Floor());
                     node.setType(currEntry.type());
                     //check if a node for the edge exists
-                    addEdge(node, currEntry);
+                    this.addNode(node);
+                    this.addEdge(node, currEntry);
                 }
                 else {
-                    Node node = this.findNode(currEntry.NodeID());
+                    node = this.findNode(currEntry.NodeID());
                     //check if a node for the edge exists
-                    addEdge(node, currEntry);
+                    this.addNode(node);
+                    this.addEdge(node, currEntry);
+
                 }
             } //For
         }
