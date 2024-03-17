@@ -24,12 +24,25 @@ function newSidebarItem(title: string, body: string): void {
 
 function toggleSidebar(): void {
 	let sidebar = document.getElementById("sidebar");
-	if (sidebar && sidebar?.style.display === "none"){	// Evaluates if sidebar exists, then if the property exists
+	let maptoggle = document.getElementById("map-button-toggle-map");
+	if (sidebar && maptoggle && sidebar?.style.display === "none"){	// Evaluates if sidebar exists, then if the property exists
 		sidebar.style.display = "";
-	} else if (sidebar) {
+		maptoggle.style.display = "";
+	} else if (sidebar && maptoggle) {
 		sidebar.style.display = "none";
+		maptoggle.style.display = "none";
 	}
-
+}
+function toggleMap(): void {
+	let map = document.getElementById("content");
+	let sidebartoggle = document.getElementById("map-button-collapse-sidebar");
+	if (map && sidebartoggle && map?.style.display === "none"){	// Evaluates if sidebar exists, then if the property exists
+		map.style.display = "";
+		sidebartoggle.style.display = "";
+	} else if (map && sidebartoggle) {
+		map.style.display = "none";
+		sidebartoggle.style.display = "none";
+	}
 }
 
 newSidebarItem("Just testing out", "This new function");
