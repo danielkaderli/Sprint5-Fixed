@@ -36,20 +36,20 @@
 		</div>
 
 		<!-- Map Display -->
-		<div class="nav-content">
+		<div class="nav-content" id="content" style="border: 2px solid green">
 			<!-- Collapse sidebar -->
 			<button id="map-button-collapse-sidebar" class="button-floating" style="left: 0;" onclick="toggleSidebar()">
-				<img src="media/ChairQuest_close_icon.png" style="width:100px; height:100px;">
-			</button>
-			<!-- Right buttons -->
-			<button id="map-button-exit" class="button-floating" style="right: 0;">
-				<img src="media/ChairQuest_close_icon.png" style="width:100px; height:100px;">
-			</button>
-			<button id="map-button-toggle-map" class="button-floating" style="right: 120px;">
-				<img src="media/ChairQuest_map_icon.png" style="width:100px; height:100px;">
+				<img src="media/ChairQuest_menu_icon.png" style="width:100px; height:100px;">
 			</button>
 		</div>
 	</div>
+	<!-- Right buttons -->
+	<button id="map-button-exit" class="button-floating" style="right: 0;">
+		<img src="media/ChairQuest_close_icon.png" style="width:100px; height:100px;">
+	</button>
+	<button id="map-button-toggle-map" class="button-floating" style="right: 120px;" onclick="toggleMap()">
+		<img src="media/ChairQuest_map_icon.png" style="width:100px; height:100px;">
+	</button>
 	<script src="map_page.js"></script>
 </body>
 
