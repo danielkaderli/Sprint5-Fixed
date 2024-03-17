@@ -5,16 +5,12 @@
 	<link rel="stylesheet" href="test.css">
 </head>
 
-<body>	
-	<!--Interactive UI-->
-	<div class="floating-UI">
-	
-	</div>
-	
+<body>
 	<!--Sidebar + Map Display-->
 	<div class="nav-container">
-		<div class="nav-sidebar" id="sidebar">
-			
+		<!-- Sidebar -->
+		<div class="nav-sidebar" id="sidebar" style="display:null">
+			<!-- List of Directions -->
 			<div class="nav-sidebar-item nav-sidebar-active">
 				<div class="nav-sidebar-title">Here</div>
 				<div class="nav-sidebar-body">We go</div>
@@ -27,12 +23,34 @@
 				<div class="nav-sidebar-title">And here's</div>
 				<div class="nav-sidebar-body">The one after that</div>
 			</div>
+
+			<!-- Navigation buttons at bottom of sidebar -->
+			<!-- Last instruction button -->
+			<button id="sidebar-button-last" class="button-floating" style="left: 0; bottom: 0;">
+				<img src="media/ChairQuest_back_icon.png" style="width:100px; height:100px;">
+			</button>
+			<!-- Next instruction button -->
+			<button id="sidebar-button-next" class="button-floating" style="right: 0; bottom: 0">
+				<img src="media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
+			</button>
 		</div>
+
+		<!-- Map Display -->
 		<div class="nav-content">
-			<div id="button-collapse-sidebar" class="button-floating">he</div>
+			<!-- Collapse sidebar -->
+			<button id="map-button-collapse-sidebar" class="button-floating" style="left: 0;" onclick="toggleSidebar()">
+				<img src="media/ChairQuest_close_icon.png" style="width:100px; height:100px;">
+			</button>
+			<!-- Right buttons -->
+			<button id="map-button-exit" class="button-floating" style="right: 0;">
+				<img src="media/ChairQuest_close_icon.png" style="width:100px; height:100px;">
+			</button>
+			<button id="map-button-toggle-map" class="button-floating" style="right: 120px;">
+				<img src="media/ChairQuest_map_icon.png" style="width:100px; height:100px;">
+			</button>
 		</div>
 	</div>
-	<script src="test.js"></script>
+	<script src="map_page.js"></script>
 </body>
 
 </html>
