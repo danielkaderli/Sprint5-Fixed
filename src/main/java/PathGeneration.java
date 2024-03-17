@@ -13,7 +13,7 @@ public class PathGeneration {
     }
 
     /* TRANSITION NODE EXTRA WEIGHT */
-    public int TransitionWeight(Node transition){
+    public void TransitionWeight(Node transition){
         //placeholder values
         int floorMin=99;
         int floorMax=-99;
@@ -31,6 +31,11 @@ public class PathGeneration {
             }
         }
         int diff = (floorMax-floorMin);
-
+        edgeIterator=transition.getEdges().iterator();
+        while(edgeIterator.hasNext()){
+            Edge currEdge= edgeIterator.next();
+            int currWeight=currEdge.getWeight();
+            currEdge.setWeight(currWeight*(diff*3));
+        }
     }
 }
