@@ -3,65 +3,49 @@ import java.io.FileReader;
 import java.util.Iterator;
 import java.util.Map;
 
+;
 public class BuildGraph {
+
+    private void addEdge(Node node, AdjacencyList adjList, FileEntry currEntry){
+        //check if a node for the edge exists and add the node and edge
+        if (adjList.findNode(/*EdgeID from file*/ currEntry.EdgeID())!=null){
+            Edge edge = new Edge(adjList.findNode(currEntry.EdgeID()),currEntry.Weight());
+            node.addEdge(edge);
+        }
+        else{
+            Node edgePlaceholder = new Node(currEntry.EdgeID(),-99,Type.FINAL);
+            adjList.addNode(edgePlaceholder);
+            Edge edge = new Edge(edgePlaceholder,currEntry.Weight());
+            node.addEdge(edge);
+        }
+    }
 
     public AdjacencyList createGraph(String graphFile)  {
         FileReader graph = new FileReader(graphFile);
 
         AdjacencyList adjList=new AdjacencyList();
+
         //placeholders until file reading is set up
-        int nodeID=0;
-        int floor=0;
-        Type type=Type.FINAL;
-        int edgeID=0;
-        int weight=0;
+        FileEntry currEntry=new FileEntry(0,0,Type.FINAL, 0,0);
         //for each line, create or find Node, create Edge, add it to adjList
-        if(adjList.findNode(/*ID from FILE*/nodeID)==null){
-            Node node = new Node(nodeID,floor, type);
-            //check if a node for the edge exists and add the node and edge
-            if (adjList.findNode(/*EdgeID from file*/ edgeID)!=null){
-                Edge edge = new Edge(adjList.findNode(edgeID),weight);
-                node.addEdge(edge);
-            }
-            else{
-                Node edgePlaceholder = new Node(edgeID,-99,Type.FINAL);
-                adjList.addNode(edgePlaceholder);
-                Edge edge = new Edge(edgePlaceholder,weight);
-                node.addEdge(edge);
-            }
+        if(adjList.findNode(/*ID from FILE*/currEntry.NodeID())==null){
+            Node node = new Node(currEntry.NodeID(),currEntry.Floor(), currEntry.type());
+            addEdge(node, adjList, currEntry);
 
         }
 
         else{
-            if (adjList.findNode(nodeID).getFloor()==-99){
-                Node node = adjList.findNode(nodeID);
-                node.setFloor(floor);
-                node.setType(type);
+            if (adjList.findNode(currEntry.NodeID()).getFloor()==-99){
+                Node node = adjList.findNode(currEntry.NodeID());
+                node.setFloor(currEntry.Floor());
+                node.setType(currEntry.type());
                 //check if a node for the edge exists
-                if (adjList.findNode(/*EdgeID from file*/ edgeID)!=null){
-                    Edge edge = new Edge(adjList.findNode(edgeID),weight);
-                    node.addEdge(edge);
-                }
-                else{
-                    Node edgePlaceholder = new Node(edgeID,-99,Type.FINAL);
-                    adjList.addNode(edgePlaceholder);
-                    Edge edge = new Edge(edgePlaceholder,weight);
-                    node.addEdge(edge);
-                }
+                addEdge(node, adjList, currEntry);
             }
             else{
-                Node node = adjList.findNode(nodeID);
+                Node node = adjList.findNode(currEntry.NodeID());
                 //check if a node for the edge exists
-                if (adjList.findNode(/*EdgeID from file*/ edgeID)!=null){
-                    Edge edge = new Edge(adjList.findNode(edgeID),weight);
-                    node.addEdge(edge);
-                }
-                else{
-                    Node edgePlaceholder = new Node(edgeID,-99,Type.FINAL);
-                    adjList.addNode(edgePlaceholder);
-                    Edge edge = new Edge(edgePlaceholder,weight);
-                    node.addEdge(edge);
-                }
+                addEdge(node, adjList,currEntry);
             }
         }
 
