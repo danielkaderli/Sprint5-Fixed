@@ -13,7 +13,7 @@ public class AdjacencyList{
         this.graph.put(newNode.getID(), newNode);
     }
 
-    public Node searchGraph(int targetID) {
+    public Node findNode(int targetID){
         return this.graph.get(targetID);
     }
 
