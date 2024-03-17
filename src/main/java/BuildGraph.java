@@ -1,6 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Iterator;
+import java.util.Map;
 
 public class BuildGraph {
 
@@ -65,6 +66,17 @@ public class BuildGraph {
         }
 
         return adjList;
+    }
+
+    //run after map fully added, update weights for all edges connected to transition nodes
+    public void UpdateWeights(AdjacencyList graph){
+        Map<Integer, Node> g= graph.getAdjacencyList();
+        for(Map.Entry<Integer, Node> entry : g.entrySet()){
+            if(entry.getValue().getType()==Type.TRANSITION)
+            {
+                TransitionWeight(entry.getValue());
+            }
+        }
     }
     public void TransitionWeight(Node transition){
         //placeholder values
