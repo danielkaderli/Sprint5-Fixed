@@ -8,8 +8,8 @@ public class PathGeneration {
     private final Node start;
     private final Node end;
     public PathGeneration(Node s, Node e){
-        start=s;
-        end=e;
+        this.start=s;
+        this.end=e;
     }
 
     /* TRANSITION NODE EXTRA WEIGHT */
