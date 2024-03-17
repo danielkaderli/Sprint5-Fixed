@@ -3,6 +3,8 @@ import javax.lang.model.type.NullType;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -76,31 +78,32 @@ public class AdjacencyList{
         }
     }
     public void createGraph(String graphFile) {
-        Scanner scan = null;
+        Scanner scan;
         try {
-            scan = new Scanner(new File(Objects.requireNonNull(getClass().getClassLoader().getResource(graphFile)).getFile()));
-        } catch (FileNotFoundException e) {
+            scan = new Scanner(new File(graphFile), StandardCharsets.UTF_8);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         scan.useDelimiter(",");
-        int nID, floor, eID, weight, i;
+        int nID, floor, eID, weight;
         Type type;
         ArrayList<FileEntry> fileEntries = new ArrayList<>();
 
         while (scan.hasNext()) {
-            nID = Integer.parseInt(scan.next());
-            floor = Integer.parseInt(scan.next());
-            type = Type.valueOf(scan.next());
-            eID = Integer.parseInt(scan.next());
-            weight = Integer.parseInt(scan.next());
+            nID = Integer.parseInt(scan.next().trim());
+            floor = Integer.parseInt(scan.next().trim());
+            type = Type.valueOf(scan.next().trim());
+            eID = Integer.parseInt(scan.next().trim());
+            weight = Integer.parseInt(scan.next().trim());;
             fileEntries.add(new FileEntry(nID, floor, type, eID, weight));
         }
+        scan.close();
 
 
         //placeholders until file reading is set up
 
-        for (int it = 0; it < fileEntries.size(); it++) {
-            FileEntry currEntry=fileEntries.get(it);
+        for (int i = 0; i < fileEntries.size(); i++) {
+            FileEntry currEntry=fileEntries.get(i);
             //for each line, create or find Node, create Edge, add it to adjList
             if (this.findNode(/*ID from FILE*/currEntry.NodeID()) == null) {
                 Node node = new Node(currEntry.NodeID(), currEntry.Floor(), currEntry.type());
@@ -113,12 +116,13 @@ public class AdjacencyList{
                     node.setType(currEntry.type());
                     //check if a node for the edge exists
                     addEdge(node, currEntry);
-                } else {
+                }
+                else {
                     Node node = this.findNode(currEntry.NodeID());
                     //check if a node for the edge exists
                     addEdge(node, currEntry);
                 }
-            }
+            } //For
         }
     }
 }
