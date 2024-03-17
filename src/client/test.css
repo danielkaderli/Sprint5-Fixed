@@ -1,5 +1,9 @@
 body{
-	color: cornsilk;
+	padding:0;
+	margin:0;
+	left:0;
+	overflow:hidden;
+	background-color: black;
 	font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 h1{
@@ -9,6 +13,31 @@ h1{
 }
 p{
 	border: 2px solid powderblue;
+}
+
+.settings-container{
+	display:flex;
+	flex-direction:column;
+	flex-wrap:nowrap;
+
+	margin:0px;
+	padding:0px;
+
+	align-items:center;
+	position:absolute;
+	height: 100%;
+}
+.settings-item{
+	position: relative;
+	font-size: auto;
+	font-weight: bolder;
+	height: 100%;
+	color: #EEEEEE;
+	top:0;
+	bottom:0;
+	padding-top:50%;
+
+	border: 2px solid green;
 }
 
 .nav-container{
@@ -53,6 +82,12 @@ p{
 .nav-sidebar-body{
 	font-size: 150%;
 	color: #CCCCCC;
+}
+.nav-map{
+	position: relative;
+	background-color: none;
+	height: 200px;
+	float: center;
 }
 
 .button-floating{

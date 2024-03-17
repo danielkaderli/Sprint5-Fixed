@@ -44,5 +44,3 @@ function toggleMap(): void {
 		sidebartoggle.style.display = "none";
 	}
 }
-
-newSidebarItem("Just testing out", "This new function");
