@@ -4,16 +4,16 @@ import java.util.Set;
 
 public class Node{
 
-
+    //properties
     private final int ID;
     private int floor;
-
     private double F;
     private double G;
     private double H;
     private Type type;
     private Node parent;
     private Set<Edge> edges= new HashSet<>();
+    //SETTERS AND GETTERS
     public int getID(){return this.ID;}
     public int getFloor(){return this.floor;}
     public void setFloor(int f){this.floor=f;}
@@ -34,6 +34,7 @@ public class Node{
     public void addEdge(Edge newEdge){
         this.edges.add(newEdge);
     }
+    //constructor
     public Node(int c, int f, Type t){
         this.ID =c;
         this.floor=f;

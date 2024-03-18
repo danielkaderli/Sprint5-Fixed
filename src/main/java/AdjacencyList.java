@@ -6,16 +6,19 @@ import java.util.*;
 
 
 public class AdjacencyList{
-
+    //properties
     private Map<Integer, Node> graph;
-
+    //constructor
     public AdjacencyList(){
         graph=new HashMap<>();
     }
+    //methods
+    //add nodes to the graph
     public void addNode(Node newNode){
         this.graph.put(newNode.getID(), newNode);
     }
 
+    //search for a node
     public Node findNode(int targetID){
         return this.graph.get(targetID);
     }
@@ -23,11 +26,13 @@ public class AdjacencyList{
 
     //check if a node for the edge exists and add the node and edge
     private void addEdge(Node node, FileEntry currEntry){
-
+        //edge node is in graph already, add edge and associate the node with it
         if (this.findNode(currEntry.EdgeID())!=null){
             Edge edge = new Edge(this.findNode(currEntry.EdgeID()),currEntry.Weight());
             node.addEdge(edge);
         }
+
+        //edge node is not in the graph, add a placeholder with dummy values and associate the edge with it
         else{
             Node edgePlaceholder = new Node(currEntry.EdgeID(),-99,Type.FINAL);
             this.addNode(edgePlaceholder);
@@ -74,11 +79,12 @@ public class AdjacencyList{
             currEdge.setWeight(currWeight*(diff*3));
         }
     }
+    //create graph from comma separated file
     public void createGraph(String graphFile) {
        String line="";
        String delim=",";
        ArrayList<FileEntry> fileEntries = new ArrayList<>();
-       try{
+       try{//create a file stream and read entries from it
            BufferedReader file = new BufferedReader((new InputStreamReader(new FileInputStream(graphFile), StandardCharsets.UTF_8)));
            while((line=file.readLine())!=null){
                String[] entry= line.split(delim);
@@ -93,17 +99,19 @@ public class AdjacencyList{
        catch (IOException e) {
            throw new RuntimeException(e);
        }
-
         for (int i = 0; i < fileEntries.size(); i++) {
             FileEntry currEntry=fileEntries.get(i);
             //for each line, create or find Node, create Edge, add it to adjList
             Node node;
+            //node doesn't exist in graph, add it and add the edge
             if (this.findNode(currEntry.NodeID()) == null) {
                 node = new Node(currEntry.NodeID(), currEntry.Floor(), currEntry.type());
                 this.addNode(node);
                 this.addEdge(node, currEntry);
             }
+            //node exists in graph
             else {
+                //if the node has a placeholder/dummy floor value, update it with the real ones
                 if (this.findNode(currEntry.NodeID()).getFloor() == -99) {
                     node = this.findNode(currEntry.NodeID());
                     node.setFloor(currEntry.Floor());
@@ -112,6 +120,7 @@ public class AdjacencyList{
                     this.addNode(node);
                     this.addEdge(node, currEntry);
                 }
+                //if the node doesn't have a dummy value, just use the node from the graph
                 else {
                     node = this.findNode(currEntry.NodeID());
                     //check if a node for the edge exists
