@@ -25,12 +25,15 @@ function newSidebarItem(title: string, body: string): void {
 function toggleSidebar(): void {
 	let sidebar = document.getElementById("sidebar");
 	let maptoggle = document.getElementById("map-button-toggle-map");
-	if (sidebar && maptoggle && sidebar?.style.display === "none"){	// Evaluates if sidebar exists, then if the property exists
+	let button = document.getElementById("map-button-collapse-sidebar");
+	if (button && sidebar && maptoggle && sidebar?.style.display === "none"){	// Evaluates if sidebar exists, then if the property exists
 		sidebar.style.display = "";
 		maptoggle.style.display = "";
-	} else if (sidebar && maptoggle) {
+		button.style.left = "25%"
+	} else if (button && sidebar && maptoggle) {
 		sidebar.style.display = "none";
 		maptoggle.style.display = "none";
+		button.style.left = "0%";
 	}
 }
 function toggleMap(): void {

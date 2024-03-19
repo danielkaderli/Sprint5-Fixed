@@ -41,15 +41,11 @@
 				<img src="media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
 			</button>
 		</div>
-
+		
 		<!-- Map Display -->
 		<div class="nav-content" id="content">
 			<!-- I'm the map, I'm the map, I'm the map, I'm the map, I'm the map! -->
 			<div id="nav-map" style="height:1000px"></div>
-			<!-- Collapse sidebar -->
-			<button id="map-button-collapse-sidebar" class="button-floating" style="left: 0;" onclick="toggleSidebar()">
-				<img src="media/ChairQuest_menu_icon.png" style="width:100px; height:100px;">
-			</button>
 		</div>
 	</div>
 	<!-- Right buttons -->
@@ -59,7 +55,12 @@
 	<button id="map-button-toggle-map" class="button-floating" style="right: 120px;" onclick="toggleMap()">
 		<img src="media/ChairQuest_map_icon.png" style="width:100px; height:100px;">
 	</button>
-
+	<!-- Left buttons -->
+	<!-- Collapse sidebar -->
+	<button id="map-button-collapse-sidebar" class="button-floating" style="left: 25%;" onclick="toggleSidebar()">
+		<img src="media/ChairQuest_menu_icon.png" style="width:100px; height:100px;">
+	</button>
+	
 	<script src="map_page.js"></script>
 	<script>
 		var map = L.map('nav-map', {crs: L.CRS.Simple}).setView([0, 0], 1);
