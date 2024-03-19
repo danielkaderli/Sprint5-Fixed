@@ -97,3 +97,68 @@ p{
 	border: none;
 	cursor: pointer;
 }
+
+/* toggle slider */
+
+.toggle-container{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+    justify-content: center; 
+    align-items: center;
+	height: 100vh;
+}
+
+.toggle{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: center;
+}
+
+label {
+	font-size: 600%;
+	font-weight: bold;
+	color: white;
+}
+
+.slider {
+    position: relative;
+    width: 180px; 
+    height: 102px;
+	margin-left: 30px;
+	background-color: red;
+	border-radius: 51px; 
+    transition: background-color 0.4s; /* Adding transition effect for smooth color change */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 78px; 
+    width: 78px; 
+    left: 12px; 
+    bottom: 12px; 
+    background-color: white; 
+    border-radius: 50%; 
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked + .slider {
+	background-color: blue;
+
+}  
+
+input[type="checkbox"] {
+    /* opacity: 0; */
+    /* width: 0;
+    height: 0; */
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(78px);
+	-ms-transform: translateX(78px);
+	transform: translateX(78px);
+  }
