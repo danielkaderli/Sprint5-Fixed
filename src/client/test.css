@@ -149,12 +149,6 @@ label {
 input:checked + .slider {
 	background-color: blue;
 
-}  
-
-input[type="checkbox"] {
-    /* opacity: 0; */
-    /* width: 0;
-    height: 0; */
 }
 
 input:checked + .slider:before {
