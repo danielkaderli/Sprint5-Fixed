@@ -62,7 +62,7 @@
 
 	<script src="map_page.js"></script>
 	<script>
-		var map = L.map('nav-map').setView([0, 0], 1);
+		var map = L.map('nav-map', {crs: L.CRS.Simple}).setView([0, 0], 1);
 		var imageUrl = 'media/ChairQuest_Union_3rd_floor.png',
     		imageBounds = [[-100, -100], [100, 100]];
 			L.imageOverlay(imageUrl, imageBounds).addTo(map);
