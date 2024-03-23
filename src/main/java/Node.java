@@ -7,6 +7,8 @@ public class Node{
     //properties
     private final int ID;
     private int floor;
+    private int renderX;
+    private int renderY;
     private double F;
     private double G;
     private double H;
@@ -24,6 +26,8 @@ public class Node{
     public void setG(double g){this.G=g;}
     public double getH(){return this.H;}
     public void setH(double h){this.H=h;}
+    public int getX(){return this.renderX;}
+    public int getY(){return this.renderY;}
 
     public Node getParent(){return this.parent;}
     public void setParent(Node p){this.parent=p;}
@@ -35,7 +39,7 @@ public class Node{
         this.edges.add(newEdge);
     }
     //constructor
-    public Node(int c, int f, Type t){
+    public Node(int c, int f, Type t, int x, int y){
         this.ID =c;
         this.floor=f;
         this.type=t;
@@ -43,6 +47,8 @@ public class Node{
         this.G=Double.POSITIVE_INFINITY;
         this.H=0;
         this.parent=null;
+        this.renderX = x;
+        this.renderY = y;
     }
 
 
