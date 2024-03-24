@@ -1,5 +1,8 @@
+import java.nio.file.Paths;
+import java.sql.*;
 import java.util.ArrayList;
 import com.google.gson.Gson;
+import org.sqlite.JDBC;
 
 
 public class Main {
@@ -18,9 +21,43 @@ public class Main {
         return json;
     }
 
+    public static String dbQuery(String buildingID){
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String url ="./build/resources/main/ChairQuest.db";
+        url = Paths.get(System.getProperty("user.dir"),
+                        Paths.get(url).getParent().toString())
+                .resolve(Paths.get(url).getFileName())
+                .normalize()
+                .toAbsolutePath()
+                .toString();
+
+        String prefix="jdbc:sqlite:";
+        prefix+=url;
+        String sql = "SELECT * FROM Buildings WHERE BuildingID = ?";
+
+        try (Connection conn = DriverManager.getConnection(prefix);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set the value for the parameter (BuildingID)
+            pstmt.setString(1, buildingID);
+
+            // Execute the query and get the result set
+            ResultSet rs = pstmt.executeQuery();
+            return rs.getString("GraphNodes");
+        }catch (SQLException e){
+            throw new RuntimeException();
+        }
+    }
     public static void main(String[] args)  {
         //use dummy file
-        String graphFile= "./build/resources/main/fakeTownHall.txt";
+        String graphFile= "./build/resources/main/";
+        String buildingID="Town Hall";
+
+        graphFile += dbQuery(buildingID);
 
         //initialize graph
         AdjacencyList graph = new AdjacencyList();
