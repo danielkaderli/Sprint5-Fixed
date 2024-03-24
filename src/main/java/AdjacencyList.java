@@ -76,7 +76,7 @@ public class AdjacencyList{
         while(edgeIterator.hasNext()){
             Edge currEdge= edgeIterator.next();
             int currWeight=currEdge.getWeight();
-            currEdge.setWeight(currWeight*(diff*3));
+            currEdge.setWeight(currWeight*(diff*9));
         }
     }
     //create graph from comma separated file
