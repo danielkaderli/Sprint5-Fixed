@@ -18,9 +18,12 @@ public class Main {
         String graphFile= "./build/resources/main/";
         String buildingID="Town Hall";
         DatabaseFetcher dbFetch= new DatabaseFetcher();
+        BuildingResult currBuilding = dbFetch.findBuilding(buildingID);
+        System.out.println(APIMethods.gsonify(currBuilding));
+        graphFile +=currBuilding.GraphNodes();
 
-        graphFile += dbFetch.findBuilding(buildingID);
-
+        ArrayList<FloorResult> currFloors=dbFetch.findFloors(buildingID);
+        System.out.println(APIMethods.gsonify(currFloors));
         //initialize graph
         AdjacencyList graph = new AdjacencyList();
         graph.createGraph(graphFile);
@@ -37,5 +40,7 @@ public class Main {
         path.setEnd(graph.findNode(21));
         currRoute=path.createRoute(graph);
         printRoute(currRoute);
+
+        System.out.println(APIMethods.gsonify(currRoute));
     }
 }
