@@ -8,7 +8,7 @@ public class DatabaseFetcher {
 
     public String getURL(){return url;}
 
-    public String findBuilding(String buildingID){
+    public BuildingResults findBuilding(String buildingID){
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -25,9 +25,14 @@ public class DatabaseFetcher {
 
             // Execute the query and get the result set
             ResultSet rs = pstmt.executeQuery();
-            return rs.getString("GraphNodes");
+            return new BuildingResults(
+                    rs.getString("BuildingID"),
+                    rs.getString("GraphNodes"),
+                    rs.getString("Contact"),
+                    rs.getString("Address"));
+
         }catch (SQLException e){
-            throw new RuntimeException();
+            return null;
         }
     }
     public DatabaseFetcher(){
