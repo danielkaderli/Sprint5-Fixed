@@ -24,6 +24,7 @@ p{
 	padding:0px;
 
 	align-items:center;
+	justify-content:center;
 	position:absolute;
 	height: 100%;
 }
@@ -100,13 +101,28 @@ p{
 
 /* toggle slider */
 
+/* .flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+	position: relative;
+}
+
+.text-size-container{
+	position: absolute;
+    top: 0;
+    right: 0;
+}
+*/
 .toggle-container{
 	display: flex;
-	flex-direction: row;
+	flex: 1;
+	flex-direction: column;
 	flex-wrap: nowrap;
     justify-content: center; 
     align-items: center;
-	height: 100vh;
+	height: 50vh;
+	position: relative;
 }
 
 .toggle{
@@ -115,7 +131,38 @@ p{
 	flex-wrap: nowrap;
 	align-items: center;
 	justify-content: center;
+
 }
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.text-size-container {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	bottom: 10%;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	position: relative;
+}
+
+/* .toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.toggle {
+    position: relative;
+    cursor: pointer;
+    padding-left: 30px;
+} */
+
 
 label {
 	font-size: 600%;
@@ -131,6 +178,7 @@ label {
 	background-color: red;
 	border-radius: 51px; 
     transition: background-color 0.4s; /* Adding transition effect for smooth color change */
+	cursor: pointer;
 }
 
 .slider:before {
