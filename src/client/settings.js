@@ -1,9 +1,6 @@
 // Retrieve the voiceover toggle checkbox element
 var voiceoverToggle = document.getElementById('voiceover-toggle');
 
-// Get the slider element
-const textSizeSlider = document.getElementById("textSizeSlider");
-
 // Add change event listener to the checkbox
 voiceoverToggle.addEventListener('change', function() {
     // Check if the checkbox is checked
@@ -20,30 +17,7 @@ voiceoverToggle.addEventListener('change', function() {
     }
 });
 
-// Execute the following code when the window is fully loaded
-window.onload = function() {
-    // Retrieve the user's preference for voiceover from localStorage
-    var voiceoverPreference = localStorage.getItem('voiceover');
-    if (voiceoverPreference === 'activated') {
-        // If 'activated', check the voiceover toggle checkbox
-        voiceoverToggle.checked = true;
-        // Call the activateVoiceover function
-        activateVoiceover();
-    } else {
-        // If 'deactivated', uncheck the voiceover toggle checkbox
-        voiceoverToggle.checked = false;
-        // Call the deactivateVoiceover function
-        deactivateVoiceover();
-    }
 
-    const savedTextSize = localStorage.getItem("textSizePreference");
-    if (savedTextSize) {
-        // Set the slider value to the saved preference
-        textSizeSlider.value = savedTextSize;
-        // Update the text size based on the saved preference
-        updateTextSize();
-    }
-};
 
 // Function to activate voiceover
 function activateVoiceover() {
@@ -60,28 +34,19 @@ function goToMap(){
 }
 // const textElements = document.querySelectorAll("body, h1, p, settings-item, nav-sidebar-title, nav-sidebar-body, label");
 
-
-// Get the example text element
-const exampleText = document.querySelector(".example-text p");
-
-// Function to update the font size of the example text
-function updateExampleTextSize() {
-    const textSizeRatio = parseFloat(textSizeSlider.value);
-    exampleText.style.fontSize = textSizeRatio + "%";
-}
-
-// Event listener for slider change
-textSizeSlider.addEventListener("input", () => {
-    //updateTextSize();
-    updateExampleTextSize(); // Update the example text size
-});
-
-function updateTextSize() {
-    const textSizeRatio = parseFloat(textSizeSlider.value);
-    
-    document.body.style.fontSize = textSizeRatio + "%";
-    localStorage.setItem("textSizePreference", textSizeRatio);
-}
-
-// Event listener for slider change
-//textSizeSlider.addEventListener("input", updateTextSize);
+// Execute the following code when the window is fully loaded
+// window.onload = function() {
+//     // Retrieve the user's preference for voiceover from localStorage
+//     var voiceoverPreference = localStorage.getItem('voiceover');
+//     if (voiceoverPreference === 'activated') {
+//         // If 'activated', check the voiceover toggle checkbox
+//         voiceoverToggle.checked = true;
+//         // Call the activateVoiceover function
+//         activateVoiceover();
+//     } else {
+//         // If 'deactivated', uncheck the voiceover toggle checkbox
+//         voiceoverToggle.checked = false;
+//         // Call the deactivateVoiceover function
+//         deactivateVoiceover();
+//     }
+// };
