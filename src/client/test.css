@@ -1,4 +1,5 @@
 body{
+	min-height:100vh;
 	padding:0;
 	margin:0;
 	left:0;
@@ -124,7 +125,6 @@ p{
 	height: 50vh;
 	position: relative;
 }
-
 .toggle{
 	display: flex;
 	flex-direction: row;
@@ -139,8 +139,19 @@ p{
     align-items: center;
     justify-content: space-between;
     position: relative;
+}/* .flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+	position: relative;
 }
 
+.text-size-container{
+	position: absolute;
+    top: 0;
+    right: 0;
+}
+*/
 .text-size-container {
 	display: flex;
 	flex: 1;
@@ -180,7 +191,6 @@ label {
     transition: background-color 0.4s; /* Adding transition effect for smooth color change */
 	cursor: pointer;
 }
-
 .slider:before {
     position: absolute;
     content: "";
@@ -193,12 +203,10 @@ label {
 	-webkit-transition: .4s;
 	transition: .4s;
 }
-
 input:checked + .slider {
 	background-color: blue;
 
 }
-
 input:checked + .slider:before {
 	-webkit-transform: translateX(78px);
 	-ms-transform: translateX(78px);
