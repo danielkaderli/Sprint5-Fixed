@@ -12,10 +12,19 @@ public class Main {
         System.out.println("Final Node: " + currRoute.get(currRoute.size()-1).NodeID() + " Total Time: " + currRoute.get(currRoute.size()-1).TimeEstimate());
     }
 
-    public static String gsonify(ArrayList<BestPath> currRoute){
+    public static String gsonifyPath(ArrayList<BestPath> currRoute, AdjacencyList graph){
         Gson gson = new Gson();
-        String json = gson.toJson(currRoute);
-        return json;
+        String pathJson = gson.toJson(currRoute);
+        String nodeJson = "";
+        for(int i = 0; i < currRoute.size(); i++)
+        {
+            int NodeID = currRoute.get(i).NodeID();
+            int nx = graph.findNode(NodeID).getX();
+            int ny = graph.findNode(NodeID).getY();
+            nodeJson += "\n{\"NodeID\":" + Integer.toString(NodeID) + ",\"RenderX\":" + Integer.toString(nx) + ",\"RenderY\":" + Integer.toString(ny) + "}";
+        }
+
+        return pathJson + nodeJson;
     }
 
     public static void main(String[] args)  {
@@ -39,6 +48,6 @@ public class Main {
         currRoute=path.createRoute(graph);
         printRoute(currRoute);
 
-        System.out.println(gsonify(currRoute));
+        System.out.println(gsonifyPath(currRoute, graph));
     }
 }
