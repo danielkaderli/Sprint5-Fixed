@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ChairQuest Settings</title>
+	<link rel="stylesheet" href="../test.css">
+</head>
+<body>
+
+	<!-- Toggle Switch -->
+	<div class="toggle-container">
+		<label class="toggle"> <!-- Container for the toggle switch -->
+				Voiceover <!-- Label for the toggle switch -->
+				<input type="checkbox" id="voiceover-toggle" style="display:none;"> <!-- Checkbox input for the toggle switch -->
+				<div class="slider"></div> <!-- The slider button -->
+		</label>
+	</div>
+	<div class="text-size-container">
+		<!-- Container for the text size slider -->
+		<label class="text-size-slider">
+			Text Size
+			<input type="range" min="100" max="250" value="100" id="textSizeSlider">
+		</label>
+	</div>
+
+	<div class="example-text1">
+		<p class="nav-sidebar-title">This is an example text. Adjust the slider to change its font size.</p>
+	</div>
+	<div class="example-text2">
+		<p class="nav-sidebar-body">This is an example text. Adjust the slider to change its font size.</p>
+	</div>
+	
+	<!-- Exit button TODO: ADD LINK TO MAIN MENU -->
+	<!-- Exit button TODO: Implement previous page memory -->
+	<a href="../html/main_menu.html">
+		<button id="settings-exit-button" class="button-floating" style="right:0; top:0;">
+			<img src="../media/ChairQuest_close_icon.png" style="width:100px; height:100px;">
+		</button>
+	</a>
+	<button id="settings-next-button" class="button-floating" style="right:0; bottom:0;">
+		<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
+	</button>
+	<button id="settings-last-button" class="button-floating" style="left:0; bottom:0;">
+		<img src="../media/ChairQuest_back_icon.png" style="width:100px; height:100px;">
+	</button>
+
+	<script src="../settings.js"></script>
+	<script src="../text_size.js"></script>
+	<script src="../user_pref.js"></script>
+</body>
+</html>

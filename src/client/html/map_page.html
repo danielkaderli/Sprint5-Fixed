@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ChairQuest Navigation</title>
+	<link rel="stylesheet" href="../test.css">
+	<!-- Leaflet stuff -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin="">
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+	integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+	crossorigin=""></script>
+</head>
+
+<body>
+	<!--Sidebar + Map Display-->
+	<div class="nav-container">
+		<!-- Sidebar -->
+		<div class="nav-sidebar" id="sidebar" style="display:null">
+			<!-- List of Directions -->
+			<div class="nav-sidebar-item nav-sidebar-active">
+				<div class="nav-sidebar-title">Here</div>
+				<div class="nav-sidebar-body">We go</div>
+			</div>
+			<div class="nav-sidebar-item">
+				<div class="nav-sidebar-title">This is</div>
+				<div class="nav-sidebar-body">The next instruction</div>
+			</div>
+			<div class="nav-sidebar-item">
+				<div class="nav-sidebar-title">And here's</div>
+				<div class="nav-sidebar-body">The one after that</div>
+			</div>
+
+			<!-- Navigation buttons at bottom of sidebar -->
+			<!-- Last instruction button -->
+			<button role="last instruction" id="sidebar-button-last" class="button-floating" style="left: 0; bottom: 0;">
+				<img src="../media/ChairQuest_back_icon.png" style="width:100px; height:100px;">
+			</button>
+			<!-- Next instruction button -->
+			<button role="next instruction" id="sidebar-button-next" class="button-floating" style="right: 0; bottom: 0">
+				<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
+			</button>
+		</div>
+		
+		<!-- Map Display -->
+		<div class="nav-content" id="content">
+			<!-- I'm the map, I'm the map, I'm the map, I'm the map, I'm the map! -->
+			<div id="nav-map" style="height:1000px"></div>
+		</div>
+	</div>
+	<!-- Right buttons -->
+	<button id="map-button-exit" class="button-floating" style="right: 0;">
+		<img src="../media/ChairQuest_close_icon.png" style="width:100px; height:100px;">
+	</button>
+	<button id="map-button-toggle-map" class="button-floating" style="right: 120px;" onclick="toggleMap()">
+		<img src="../media/ChairQuest_map_icon.png" style="width:100px; height:100px;">
+	</button>
+	<!-- Left buttons -->
+	<!-- Collapse sidebar -->
+	<button id="map-button-collapse-sidebar" class="button-floating" style="left: 25%;" onclick="toggleSidebar()">
+		<img src="../media/ChairQuest_menu_icon.png" style="width:100px; height:100px;">
+	</button>
+	
+	<script src="../map_page.js"></script>
+	<script>
+		var map = L.map('nav-map', {crs: L.CRS.Simple}).setView([0, 0], 1);
+		var imageUrl = '../media/ChairQuest_Union_3rd_floor.png',
+    		imageBounds = [[-100, -100], [100, 100]];
+			L.imageOverlay(imageUrl, imageBounds).addTo(map);
+			map.fitBounds(imageBounds);
+		map.zoomControl.setPosition('bottomright');
+	</script>
+	<script src="text_size.js"></script>
+	<script src="user_pref.js"></script>
+</body>
+
+</html>
