@@ -16,6 +16,8 @@ public class Main {
     public static String gsonifyPath(ArrayList<BestPath> currRoute, AdjacencyList graph){
         Gson gson = new Gson();
         String pathJson = gson.toJson(currRoute);
+
+        return pathJson;
     }
 
     public static void main(String[] args)  {
