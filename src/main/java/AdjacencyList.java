@@ -34,7 +34,7 @@ public class AdjacencyList{
 
         //edge node is not in the graph, add a placeholder with dummy values and associate the edge with it
         else{
-            Node edgePlaceholder = new Node(currEntry.EdgeID(),-99,Type.FINAL);
+            Node edgePlaceholder = new Node(currEntry.EdgeID(),-99,Type.FINAL, 0, 0);
             this.addNode(edgePlaceholder);
             Edge edge = new Edge(edgePlaceholder,currEntry.Weight());
             node.addEdge(edge);
@@ -76,7 +76,7 @@ public class AdjacencyList{
         while(edgeIterator.hasNext()){
             Edge currEdge= edgeIterator.next();
             int currWeight=currEdge.getWeight();
-            currEdge.setWeight(currWeight*(diff*3));
+            currEdge.setWeight(currWeight*(diff*9));
         }
     }
     //create graph from comma separated file
@@ -92,8 +92,12 @@ public class AdjacencyList{
                        /* NodeID */ Integer.parseInt(entry[0]),
                        /* Floor  */ Integer.parseInt(entry[1]),
                        /* Type   */ Type.valueOf(entry[2]),
-                       /* EdgeID */ Integer.parseInt(entry[3]),
-                       /* Weight */ Integer.parseInt(entry[4])));
+                       /* NodeX  */ Integer.parseInt(entry[3]),
+                       /* NodeY  */ Integer.parseInt(entry[4]),
+                       /* EdgeID */ Integer.parseInt(entry[5]),
+                       /* Weight */ Integer.parseInt(entry[6])));
+
+               //NodeID,Floor,Type,NodeX,NodeY,EdgeID,Weight
            }
        }
        catch (IOException e) {
@@ -105,7 +109,7 @@ public class AdjacencyList{
             Node node;
             //node doesn't exist in graph, add it and add the edge
             if (this.findNode(currEntry.NodeID()) == null) {
-                node = new Node(currEntry.NodeID(), currEntry.Floor(), currEntry.type());
+                node = new Node(currEntry.NodeID(), currEntry.Floor(), currEntry.type(), currEntry.renderX(), currEntry.renderY());
                 this.addNode(node);
                 this.addEdge(node, currEntry);
             }
