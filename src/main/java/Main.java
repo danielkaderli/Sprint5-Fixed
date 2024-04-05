@@ -16,16 +16,6 @@ public class Main {
     public static String gsonifyPath(ArrayList<BestPath> currRoute, AdjacencyList graph){
         Gson gson = new Gson();
         String pathJson = gson.toJson(currRoute);
-        String nodeJson = "";
-        for(int i = 0; i < currRoute.size(); i++)
-        {
-            int NodeID = currRoute.get(i).NodeID();
-            int nx = graph.findNode(NodeID).getX();
-            int ny = graph.findNode(NodeID).getY();
-            nodeJson += "\n{\"NodeID\":" + Integer.toString(NodeID) + ",\"RenderX\":" + Integer.toString(nx) + ",\"RenderY\":" + Integer.toString(ny) + "}";
-        }
-
-        return pathJson + nodeJson;
     }
 
     public static void main(String[] args)  {
