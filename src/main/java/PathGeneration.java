@@ -25,7 +25,9 @@ public class PathGeneration {
     //distance estimation factor equation
     private double heuristicFunction(Edge curr) {
         double floorDiff = curr.getSelf().getFloor() - this.end.getFloor();
-        return Math.sqrt((floorDiff * floorDiff) + (curr.getWeight() * curr.getWeight()));
+        double xDiff = curr.getSelf().getX()-this.end.getX();
+        double yDiff = curr.getSelf().getY()-this.end.getY();
+        return Math.sqrt((floorDiff * floorDiff) + (xDiff*xDiff)+(yDiff*yDiff));
     }
 
     //restore default values of F, G, H, and parent for all nodes in the graph
