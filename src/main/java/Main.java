@@ -13,21 +13,17 @@ public class Main {
         System.out.println("Final Node: " + currRoute.get(currRoute.size()-1).NodeID() + " Total Time: " + currRoute.get(currRoute.size()-1).TimeEstimate());
     }
 
-    public static String gsonifyPath(ArrayList<BestPath> currRoute, AdjacencyList graph){
-        Gson gson = new Gson();
-        String pathJson = gson.toJson(currRoute);
-
-        return pathJson;
-    }
-
     public static void main(String[] args)  {
         //use dummy file
         String graphFile= "./build/resources/main/";
         String buildingID="Town Hall";
         DatabaseFetcher dbFetch= new DatabaseFetcher();
+        BuildingResult currBuilding = dbFetch.findBuilding(buildingID);
+        System.out.println(APIMethods.gsonify(currBuilding));
+        graphFile +=currBuilding.GraphNodes();
 
-        graphFile += dbFetch.findBuilding(buildingID);
-
+        ArrayList<FloorResult> currFloors=dbFetch.findFloors(buildingID);
+        System.out.println(APIMethods.gsonify(currFloors));
         //initialize graph
         AdjacencyList graph = new AdjacencyList();
         graph.createGraph(graphFile);
@@ -45,6 +41,6 @@ public class Main {
         currRoute=path.createRoute(graph);
         printRoute(currRoute);
 
-        System.out.println(gsonifyPath(currRoute, graph));
+        System.out.println(APIMethods.gsonify(currRoute));
     }
 }

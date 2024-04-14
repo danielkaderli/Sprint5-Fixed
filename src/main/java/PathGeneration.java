@@ -8,9 +8,16 @@ public class PathGeneration {
     //properties
     private Node start;
     private Node end;
+
     //setters and getters
-    public void setStart(Node s){this.start=s;}
-    public void setEnd(Node e){this.end=e;}
+    public void setStart(Node s) {
+        this.start = s;
+    }
+
+    public void setEnd(Node e) {
+        this.end = e;
+    }
+
     //constructor
     public PathGeneration(Node s, Node e) {
         this.start = s;
@@ -25,7 +32,10 @@ public class PathGeneration {
     //distance estimation factor equation
     private double heuristicFunction(Edge curr) {
         double floorDiff = curr.getSelf().getFloor() - this.end.getFloor();
-        return Math.sqrt((floorDiff * floorDiff) + (curr.getWeight() * curr.getWeight()));
+        double xDiff = curr.getSelf().getX() - this.end.getX();
+        double yDiff = curr.getSelf().getY() - this.end.getY();
+        //x,y,z approximate distance formula sqrt((X1-X2)^2+(Y1-Y2)^2+(Z1-Z2)^2)
+        return Math.sqrt((floorDiff * floorDiff) + (xDiff * xDiff) + (yDiff * yDiff));
     }
 
     //restore default values of F, G, H, and parent for all nodes in the graph
@@ -100,48 +110,61 @@ public class PathGeneration {
 
 
     //calculate and return the time in seconds between two given nodes based on weight
-    private double timeInSeconds(Node a, Node b){
+    private double timeInSeconds(Node a, Node b) {
         Iterator<Edge> edgeIterator = a.getEdges().iterator();
-        int weight =0;
-        while(edgeIterator.hasNext()){
+        int weight = 0;
+        while (edgeIterator.hasNext()) {
             Edge curr = edgeIterator.next();
-            if(curr.getSelf().getID()==b.getID()){
+            if (curr.getSelf().getID() == b.getID()) {
                 weight = curr.getWeight();
                 break;
             }
         }
-        return weight *30;
+        return weight * 10;
     }
 
     //create a route using the pathfinding algorithm and return the resulting route
-    public ArrayList<BestPath> createRoute(AdjacencyList graph){
+    public ArrayList<BestPath> createRoute(AdjacencyList graph) {
         ArrayList<BestPath> generatedPath = new ArrayList<>();
-        double totalTime=0;
-        if (this.end==aStarr(graph)){
-            ArrayList<Node> revPath= new ArrayList<>();
+        double totalTime = 0;
+        if (this.end == aStarr(graph)) {
+            ArrayList<Node> revPath = new ArrayList<>();
             revPath.add(this.end);
             Node parent = this.end.getParent();
-            while(parent.getParent()!=null){
+            while (parent.getParent() != null) {
                 revPath.add(parent);
-                parent= parent.getParent();
+                parent = parent.getParent();
             }
             revPath.add(this.start);
             Collections.reverse(revPath);
+            for (int i = 0; i < revPath.size() - 1; i++) {
+                    BestPath newEntry = new BestPath(
+                            /* Curr Node ID */ revPath.get(i).getID(),
+                            /* Curr Node X  */ revPath.get(i).getX(),
+                            /* Curr Node Y  */ revPath.get(i).getY(),
+                            /* Next Node ID */ revPath.get(i + 1).getID(),
+                            /* Next Node X  */ revPath.get(i + 1).getX(),
+                            /* Next Node Y  */ revPath.get(i + 1).getY(),
+                            /* Time To Node */ timeInSeconds(revPath.get(i), revPath.get(i + 1)));
 
-            for(int i=0; i<revPath.size()-1; i++){
-               BestPath newEntry= new BestPath(revPath.get(i).getID(), revPath.get(i+1).getID(),timeInSeconds(revPath.get(i), revPath.get(i+1)));
-               totalTime+= newEntry.TimeEstimate();
-               generatedPath.add(newEntry);
+                    totalTime += newEntry.TimeEstimate();
+                    generatedPath.add(newEntry);
+                }
+
+                //Last entry of generatedPath is destination node with total time to finish route
+                BestPath finalEntry = new BestPath(
+                        /* Final Node ID */ revPath.get(revPath.size() - 1).getID(),
+                        /* Final Node X  */ revPath.get(revPath.size() - 1).getX(),
+                        /* Final Node Y  */ revPath.get(revPath.size() - 1).getY(),
+                        null, null, null,
+                        totalTime);
+                generatedPath.add(finalEntry);
+
+                return generatedPath;
+
+
             }
-
-            //Last entry of generatedPath is destination node with total time to finish route
-            BestPath finalEntry= new BestPath(revPath.get(revPath.size()-1).getID(), null, totalTime);
-            generatedPath.add(finalEntry);
-
-            return generatedPath;
-
-
+            return null;
         }
-        return null;
     }
 }
