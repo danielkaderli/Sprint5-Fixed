@@ -13,12 +13,8 @@ public class DatabaseFetcher {
 
     public String getURL(){return url;}
 
+    //function to find the information about a building in the database and return it
     public BuildingResult findBuilding(String buildingID){
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
         String sql = "SELECT * FROM Buildings WHERE BuildingID = ?";
 
@@ -41,6 +37,7 @@ public class DatabaseFetcher {
         }
     }
 
+    //function to find the floors of a given building in a database and return them
     public  ArrayList<FloorResult> findFloors(String buildingID){
         String sql = "SELECT * FROM Floors WHERE BuildingID = ?";
         ArrayList<FloorResult> floors = new ArrayList<>();
@@ -65,6 +62,8 @@ public class DatabaseFetcher {
         }
 
     }
+
+    //default constructor
     public DatabaseFetcher(){
         this.baseUrl="./build/resources/main/ChairQuest.db";
         this.baseUrl = Paths.get(System.getProperty("user.dir"),
@@ -74,7 +73,16 @@ public class DatabaseFetcher {
                 .toAbsolutePath()
                 .toString();
         this.url=this.prefix+this.baseUrl;
+        //load the class needed to process sqlite databases
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
     }
+
+    //constructor in case of a different database
     public DatabaseFetcher(String bURL){
         this.baseUrl=bURL;
         this.baseUrl=Paths.get(System.getProperty("user.dir"),
@@ -84,5 +92,12 @@ public class DatabaseFetcher {
                 .toAbsolutePath()
                 .toString();
         this.url=this.prefix+this.baseUrl;
+        //load the class needed to process sqlite databases
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

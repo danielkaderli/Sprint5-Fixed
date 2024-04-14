@@ -34,6 +34,7 @@ public class PathGeneration {
         double floorDiff = curr.getSelf().getFloor() - this.end.getFloor();
         double xDiff = curr.getSelf().getX() - this.end.getX();
         double yDiff = curr.getSelf().getY() - this.end.getY();
+        //x,y,z approximate distance formula sqrt((X1-X2)^2+(Y1-Y2)^2+(Z1-Z2)^2)
         return Math.sqrt((floorDiff * floorDiff) + (xDiff * xDiff) + (yDiff * yDiff));
     }
 
