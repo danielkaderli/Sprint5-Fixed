@@ -120,7 +120,7 @@ public class PathGeneration {
                 break;
             }
         }
-        return weight * 30;
+        return weight * 10;
     }
 
     //create a route using the pathfinding algorithm and return the resulting route
