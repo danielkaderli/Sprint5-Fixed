@@ -15,16 +15,17 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.File;
 import java.nio.file.Files;
+import java.util.stream.Collectors;
 
 
 public class ServerRouter {
 
-    private int port;
+    private final int port;
     private final Gson gson = new Gson();
     private HttpServer server;
 
     private DatabaseFetcher database = new DatabaseFetcher();
-    private AdjacencyList graph;
+    private AdjacencyList graph = new AdjacencyList();
     public ServerRouter(int port){
         this.port = port;
         this.start();
@@ -36,7 +37,7 @@ public class ServerRouter {
         try{
             server = HttpServer.create(new InetSocketAddress(this.port), 0);
             server.createContext("/maprequest", new MapRequestHandler());
-            server.createContext("images", new ImageHandler());
+            server.createContext("/images", new ImageHandler());
             server.start();
             System.out.println("Server is running on port "+ port);
 
@@ -52,7 +53,7 @@ public class ServerRouter {
             System.out.println("Server has shut down");
         }
     }
-     class ImageHandler implements HttpHandler{
+    static class ImageHandler implements HttpHandler{
         @Override
          public void handle(HttpExchange exchange) throws IOException{
             //Get image from request URI
@@ -89,11 +90,11 @@ public class ServerRouter {
                 //parse the request body
                 InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
                 BufferedReader br = new BufferedReader(isr);
-                String requestBody = br.readLine();
+                String requestBody = br.lines().collect(Collectors.joining("\n"));
 
                 JsonObject jsonBody = gson.fromJson(requestBody, JsonObject.class);
                 //if the directions are requested, process best route and return
-                if(jsonBody.has("Start")){
+                if(jsonBody.has("start")){
                     //get start and end
                     String startNode = jsonBody.get("start").getAsString();
                     String endNode = jsonBody.get("end").getAsString();
@@ -102,7 +103,7 @@ public class ServerRouter {
 
                     //create best path
                     PathGeneration pathCalc = new PathGeneration(start,end);
-                    String currBestRoute= APIMethods.gsonify(pathCalc.createRoute(graph));
+                    ArrayList<BestPath> currBestRoute= pathCalc.createRoute(graph);
 
                     //create response
                     Map<String, Object> responseData= new HashMap<>();
@@ -131,6 +132,7 @@ public class ServerRouter {
                         //create graph
                         graphFile +=currBuilding.GraphNodes();
                         graph.createGraph(graphFile);
+                        graph.UpdateWeights();
 
                         //create response
                         Map<String, Object> responseData = new HashMap<>();
@@ -146,6 +148,13 @@ public class ServerRouter {
                         OutputStream os = exchange.getResponseBody();
                         os.write(response.getBytes());
                         os.close();
+                }
+                else {
+                    String response = "No matching definitions found";
+                    exchange.sendResponseHeaders(404, response.getBytes().length);
+                    OutputStream os = exchange.getResponseBody();
+                    os.write(response.getBytes());
+                    os.close();
                 }
             } else {
                 // Method not allowed

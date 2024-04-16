@@ -20,6 +20,9 @@ public class Node{
     public int getFloor(){return this.floor;}
     public void setFloor(int f){this.floor=f;}
 
+    public void setX(int x){this.renderX=x;}
+
+    public void setY(int y){this.renderY=y;}
     public double getF(){return this.F;}
     public void setF(double f){this.F=f;}
     public double getG(){return this.G;}
