@@ -13,9 +13,9 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
+import java.io.File;
+import java.nio.file.Files;
 
-import javax.xml.crypto.Data;
 
 public class ServerRouter {
 
@@ -36,6 +36,7 @@ public class ServerRouter {
         try{
             server = HttpServer.create(new InetSocketAddress(this.port), 0);
             server.createContext("/maprequest", new MapRequestHandler());
+            server.createContext("images", new ImageHandler());
             server.start();
             System.out.println("Server is running on port "+ port);
 
@@ -51,7 +52,36 @@ public class ServerRouter {
             System.out.println("Server has shut down");
         }
     }
+     class ImageHandler implements HttpHandler{
+        @Override
+         public void handle(HttpExchange exchange) throws IOException{
+            //Get image from request URI
+            String uri = exchange.getRequestURI().toString();
+            String fileName = uri.substring(uri.lastIndexOf('/')+1);
 
+            //find file
+            File file = new File("./build/resources/main/" +fileName);
+
+            //respond with file
+            if(file.exists() && file.isFile()){
+                exchange.getResponseHeaders().set("Content-Type", Files.probeContentType(file.toPath()));
+                exchange.sendResponseHeaders(200,file.length());
+
+                OutputStream os = exchange.getResponseBody();
+                Files.copy(file.toPath(), os);
+
+                os.close();
+            }
+            //no file found, inform user
+            else{
+                String response = "File not found";
+                exchange.sendResponseHeaders(404,response.length());
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            }
+        }
+     }
      class MapRequestHandler implements HttpHandler{
         @Override
         public void handle(HttpExchange exchange) throws IOException {
