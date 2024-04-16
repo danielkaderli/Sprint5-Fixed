@@ -63,6 +63,24 @@ public class DatabaseFetcher {
 
     }
 
+    //generates a list of all buildings in the database
+    public ArrayList<String> findBuildings(){
+        //generate query
+        String sql = "SELECT * FROM Buildings";
+        ArrayList<String> buildingNames = new ArrayList<>();
+        //execute the query and build the resultset into a list and return
+        try (Connection conn = DriverManager.getConnection(this.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs=pstmt.executeQuery();
+            while(rs.next()){
+                buildingNames.add(rs.getString("BuildingID"));
+            }
+            return buildingNames;
+        }catch (SQLException e){
+            return null;
+        }
+
+    }
     //default constructor
     public DatabaseFetcher(){
         this.baseUrl="./build/resources/main/ChairQuest.db";

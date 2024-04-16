@@ -38,6 +38,7 @@ public class ServerRouter {
             server = HttpServer.create(new InetSocketAddress(this.port), 0);
             server.createContext("/maprequest", new MapRequestHandler());
             server.createContext("/images", new ImageHandler());
+            server.createContext("/buildings", new BuildingRequestHandler());
             server.start();
             System.out.println("Server is running on port "+ port);
 
@@ -55,34 +56,42 @@ public class ServerRouter {
     }
     static class ImageHandler implements HttpHandler{
         @Override
-         public void handle(HttpExchange exchange) throws IOException{
-            //Get image from request URI
-            String uri = exchange.getRequestURI().toString();
-            String fileName = uri.substring(uri.lastIndexOf('/')+1);
+         public void handle(HttpExchange exchange) throws IOException {
+            if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+                //Get image from request URI
+                String uri = exchange.getRequestURI().toString();
+                String fileName = uri.substring(uri.lastIndexOf('/') + 1);
 
-            //find file
-            File file = new File("./build/resources/main/" +fileName);
+                //find file
+                File file = new File("./build/resources/main/" + fileName);
 
-            //respond with file
-            if(file.exists() && file.isFile()){
-                exchange.getResponseHeaders().set("Content-Type", Files.probeContentType(file.toPath()));
-                exchange.sendResponseHeaders(200,file.length());
+                //respond with file
+                if (file.exists() && file.isFile()) {
+                    exchange.getResponseHeaders().set("Content-Type", Files.probeContentType(file.toPath()));
+                    exchange.sendResponseHeaders(200, file.length());
 
-                OutputStream os = exchange.getResponseBody();
-                Files.copy(file.toPath(), os);
+                    OutputStream os = exchange.getResponseBody();
+                    Files.copy(file.toPath(), os);
 
-                os.close();
+                    os.close();
+                }
+                //no file found, inform user
+                else {
+                    String response = "File not found";
+                    exchange.sendResponseHeaders(404, response.length());
+                    OutputStream os = exchange.getResponseBody();
+                    os.write(response.getBytes());
+                    os.close();
+                }
             }
-            //no file found, inform user
-            else{
-                String response = "File not found";
-                exchange.sendResponseHeaders(404,response.length());
+            else {
+                // Method not allowed
+                exchange.sendResponseHeaders(405, 0);
                 OutputStream os = exchange.getResponseBody();
-                os.write(response.getBytes());
                 os.close();
             }
         }
-     }
+    }
      class MapRequestHandler implements HttpHandler{
         @Override
         public void handle(HttpExchange exchange) throws IOException {
@@ -106,11 +115,7 @@ public class ServerRouter {
                     ArrayList<BestPath> currBestRoute= pathCalc.createRoute(graph);
 
                     //create response
-                    Map<String, Object> responseData= new HashMap<>();
-                    responseData.put("message", "Success");
-                    responseData.put("status", 200);
-                    responseData.put("route", currBestRoute);
-                    String response = gson.toJson(responseData);
+                    String response = gson.toJson(currBestRoute);
 
                     //send response to requester
                     exchange.getResponseHeaders().set("Content-Type", "application/json");
@@ -136,8 +141,6 @@ public class ServerRouter {
 
                         //create response
                         Map<String, Object> responseData = new HashMap<>();
-                        responseData.put("message", "Success");
-                        responseData.put("status", 200);
                         responseData.put("Building Information", currBuilding);
                         responseData.put("Floors", buildingFloors);
                         String response = gson.toJson(responseData);
@@ -157,6 +160,31 @@ public class ServerRouter {
                     os.close();
                 }
             } else {
+                // Method not allowed
+                exchange.sendResponseHeaders(405, 0);
+                OutputStream os = exchange.getResponseBody();
+                os.close();
+            }
+        }
+    }
+
+    class BuildingRequestHandler implements HttpHandler{
+        @Override
+        public void handle(HttpExchange exchange) throws IOException{
+            if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+                //search database for valid buildings
+                ArrayList<String> buildingNames = database.findBuildings();
+
+                //create response
+                String response = gson.toJson(buildingNames);
+
+                //send response to requester
+                exchange.sendResponseHeaders(200,response.getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            }
+            else {
                 // Method not allowed
                 exchange.sendResponseHeaders(405, 0);
                 OutputStream os = exchange.getResponseBody();
