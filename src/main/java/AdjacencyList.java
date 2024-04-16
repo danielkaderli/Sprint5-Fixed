@@ -118,6 +118,8 @@ public class AdjacencyList{
                     node = this.findNode(currEntry.NodeID());
                     node.setFloor(currEntry.Floor());
                     node.setType(currEntry.type());
+                    node.setX(currEntry.renderX());
+                    node.setY(currEntry.renderY());
                     //check if a node for the edge exists
                     this.addNode(node);
                     this.addEdge(node, currEntry);
