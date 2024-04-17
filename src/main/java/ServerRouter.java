@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.Filter;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.stream.Collectors;
@@ -36,9 +37,12 @@ public class ServerRouter {
     public void start(){
         try{
             server = HttpServer.create(new InetSocketAddress(this.port), 0);
-            server.createContext("/maprequest", new MapRequestHandler());
-            server.createContext("/images", new ImageHandler());
-            server.createContext("/buildings", new BuildingRequestHandler());
+            CORSFilter corsFilter = new CORSFilter();
+
+            server.createContext("/maprequest", new MapRequestHandler()).getFilters().add(corsFilter);
+            server.createContext("/images", new ImageHandler()).getFilters().add(corsFilter);
+            server.createContext("/buildings", new BuildingRequestHandler()).getFilters().add(corsFilter);
+
             server.start();
             System.out.println("Server is running on port "+ port);
 
@@ -190,6 +194,28 @@ public class ServerRouter {
                 OutputStream os = exchange.getResponseBody();
                 os.close();
             }
+        }
+    }
+    class CORSFilter extends Filter {
+
+        @Override
+        public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
+            // Allow requests from any origin
+            exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+
+            // Allow specified methods
+            exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+
+            // Allow specified headers
+            exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+            // Proceed with the chain
+            chain.doFilter(exchange);
+        }
+
+        @Override
+        public String description() {
+            return "CORS Filter for enabling Cross-Origin Resource Sharing";
         }
     }
 }
