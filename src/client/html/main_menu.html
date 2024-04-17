@@ -3,6 +3,7 @@
 <head>
 	<title>ChairQuest Main Menu</title>
 	<link rel="stylesheet" href="../test.css">
+	
 </head>
 <body>
 	
@@ -18,6 +19,11 @@
 	</a>
 
 	<!-- TODO: fix this by figuring out typescript or fixing javascript -->
-	<script src="../main_menu.js"></script>
+	<!-- <script src="../typescript/main_menu.js"></script> -->
+	<script src="../typescript/comms.js"></script>
+	<script>
+		// Request map and related nodes when next page visited
+		document.getElementById("main-menu-next-button").onclick = getMap("Union");
+	</script>
 </body>
 </html>
