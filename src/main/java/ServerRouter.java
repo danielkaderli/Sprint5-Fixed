@@ -209,6 +209,7 @@ public class ServerRouter {
             // Allow specified headers
             exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
+            exchange.sendResponseHeaders(200, -1);
             // Proceed with the chain
             chain.doFilter(exchange);
         }
