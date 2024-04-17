@@ -200,6 +200,7 @@ public class ServerRouter {
 
         @Override
         public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
+            if (exchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
             // Allow requests from any origin
             exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
 
@@ -209,9 +210,12 @@ public class ServerRouter {
             // Allow specified headers
             exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-            exchange.sendResponseHeaders(200, -1);
+            exchange.sendResponseHeaders(200, -1);}
+            else{
             // Proceed with the chain
             chain.doFilter(exchange);
+            }
+
         }
 
         @Override
