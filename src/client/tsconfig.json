@@ -4,8 +4,9 @@
         "./typescript/main_menu.ts",
         "./typescript/map_page.ts",
         "./typescript/settings.ts",
+        "./typescript/directions.ts",
         // The following are anticipated changes
         // "./typescript/text_size.ts",
-        // "./typescript/user_pref.ts"        
+        // "./typescript/user_pref.ts"
     ]
 }
