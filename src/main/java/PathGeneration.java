@@ -139,13 +139,17 @@ public class PathGeneration {
             Collections.reverse(revPath);
             for (int i = 0; i < revPath.size() - 1; i++) {
                     BestPath newEntry = new BestPath(
-                            /* Curr Node ID */ revPath.get(i).getID(),
-                            /* Curr Node X  */ revPath.get(i).getX(),
-                            /* Curr Node Y  */ revPath.get(i).getY(),
-                            /* Next Node ID */ revPath.get(i + 1).getID(),
-                            /* Next Node X  */ revPath.get(i + 1).getX(),
-                            /* Next Node Y  */ revPath.get(i + 1).getY(),
-                            /* Time To Node */ timeInSeconds(revPath.get(i), revPath.get(i + 1)));
+                            /* Curr Node ID   */ revPath.get(i).getID(),
+                            /* Curr Node X    */ revPath.get(i).getX(),
+                            /* Curr Node Y    */ revPath.get(i).getY(),
+                            /* Curr Node Z    */ revPath.get(i).getFloor(),
+                            /* Curr Node Type */ revPath.get(i).getType(),
+                            /* Next Node ID   */ revPath.get(i + 1).getID(),
+                            /* Next Node X    */ revPath.get(i + 1).getX(),
+                            /* Next Node Y    */ revPath.get(i + 1).getY(),
+                            /* Next Node Z    */ revPath.get(i+1).getFloor(),
+                            /* Next Node Type */ revPath.get(i+1).getType(),
+                            /* Time To Node   */ timeInSeconds(revPath.get(i), revPath.get(i + 1)));
 
                     totalTime += newEntry.TimeEstimate();
                     generatedPath.add(newEntry);
@@ -153,10 +157,12 @@ public class PathGeneration {
 
                 //Last entry of generatedPath is destination node with total time to finish route
                 BestPath finalEntry = new BestPath(
-                        /* Final Node ID */ revPath.get(revPath.size() - 1).getID(),
-                        /* Final Node X  */ revPath.get(revPath.size() - 1).getX(),
-                        /* Final Node Y  */ revPath.get(revPath.size() - 1).getY(),
-                        null, null, null,
+                        /* Final Node ID     */ revPath.get(revPath.size() - 1).getID(),
+                        /* Final Node X      */ revPath.get(revPath.size() - 1).getX(),
+                        /* Final Node Y      */ revPath.get(revPath.size() - 1).getY(),
+                        /* Final Node Z      */ revPath.get(revPath.size()-1).getFloor(),
+                        /* Final Node Type   */ revPath.get(revPath.size()-1).getType(),
+                        null, null, null, null, null,
                         totalTime);
                 generatedPath.add(finalEntry);
 
