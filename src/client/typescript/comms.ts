@@ -19,9 +19,8 @@ async function getMap(mapname: string) {
         },
         body: JSON.stringify(labels),
     })
-    .then((response) => {
-        console.log("DEBUG: status: " + response.json())
-    });
+    const data = await response.json();
+    console.log(data);
 
     console.log("Request sent successfully");
 }
