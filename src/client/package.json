@@ -1,7 +1,7 @@
 {
     "name": "chairquest",
     "description": "A wheelchair-accessible indoors navigator",
-    "main": "./typescript",
+    "type": "module",
     "scripts": {
         "build": "tsc --build",
         "clean": "find . -name '*.ts' -exec sh -c 'rm -f ${0%.ts}.js' {} \\;"
