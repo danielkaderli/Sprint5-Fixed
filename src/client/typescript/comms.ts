@@ -22,14 +22,14 @@ async function getMap(mapname: string) {
     })
 
     const buildingData = await buildingResponse.json();
-    console.log();
+    // console.log(buildingData);
     // Store buildingData under same name
     sessionStorage.setItem("buildingData", buildingData);
 
     // Request floor images
     for (let floor in buildingData["Floors"]) {
         let url = "http://localhost:8080/images/" + buildingData["Floors"][floor]["FloorMap"];
-        console.log("URL: " + url);
+        // console.log("URL: " + url);
 
         const floorResponse = await fetch(url, {
             method: 'GET',
@@ -40,75 +40,63 @@ async function getMap(mapname: string) {
                 'Content-Type': 'application/json'
             }
         })
-        .then()
         // Store document locally, stored as url that can be used directly in <img> src properties
         let imageBlob = await floorResponse.blob();
         sessionImageStore(buildingData["Floors"][floor], imageBlob);
-
-        // let image = document.createElement("img")
-        // image.setAttribute("src", sessionStorage.getItem(buildingData["Floors"][floor]["FloorMap"]));
     }
 
-    // Request floor nodes
-    for (let floor in buildingData["Floors"]) {
-        let url = "http://localhost:8080/images/" + buildingData["Floors"][floor]["FloorMap"];
-        console.log("URL: " + url);
+    // Request graph of the building
+    url = "http://localhost:8080/images/" + buildingData["Building Information"]["GraphNodes"];
+    console.log(url);
 
-        const floorResponse = await fetch(url, {
-            method: 'GET',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then()
-        // Store document locally, stored as url that can be used directly in <img> src properties
-        let imageBlob = await floorResponse.blob();
-
-        // let image = document.createElement("img")
-        // image.setAttribute("src", sessionStorage.getItem(buildingData["Floors"][floor]["FloorMap"]));
-    }
-    
-}
-// TODO: FINISH UP REQUESTING FLOOR NODES
-
-
-// TOOLS FOR MAKING BRAIN HURT LESS WHEN DEALING WITH IMAGES
-// I don't want to completely redo the way typescript is currently handled, so cannot offload these to another file
-// Would be good for future refactoring though
-function sessionImageStore(imageIndex: string, imageData: Blob): void{
-    console.log("sessionImageStore() invoked");
-    
-    // Convert the data to Base64
-    const reader = new FileReader();
-    reader.readAsDataURL(imageData);
-    reader.onloadend = function() {
-        let base64string = reader.result
-        
-        // Do type checking for TypeScript's sanity (apparently the 'string | ArrayBuffer' data type isn't 'string' enough)
-        if(base64string instanceof ArrayBuffer){
-            const decoder = new TextDecoder('utf-8');
-            base64string = decoder.decode(base64string);
-        }else{
-            base64string = (base64string as string);
-            console.log(base64string)
+    const nodesResponse = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
         }
+    })
 
-        // Store the Base64 data
-        sessionStorage.setItem(imageIndex, base64string);
+    console.log("Extracting Graph Nodes...");
+    // Extract the graph nodes & convert them into JSON
+    const nodesReader = nodesResponse.body.getReader();
+    let finished: any = false;
+    let graphCode;
+    let i = 0;
+    await nodesReader.read().then(({ done, value }) => {
+        finished = done;
+        if(!done){
+            graphCode = value;
+        }
+    });
+    let graphNodes = new TextDecoder().decode(graphCode);
+    graphNodes = graphNodes.trim();
+
+    // Process the received graph nodes into json
+    // nodeID, floor, Type, X, Y, EdgeID, Weight
+    let nodeArray = graphNodes.split("\n");
+    let nodeObject: { [key:string]: any } = {};
+    for(let i = 0; i < nodeArray.length; i++){
+        let currentNode = nodeArray[i].split(",");
+        let node = {
+            Floor: currentNode[1],
+            Type: currentNode[2],
+            X: currentNode[3],
+            Y: currentNode[4],
+            EdgeID: currentNode[5],
+            Weight: currentNode[6],
+        };
+
+        // Store it by the index of its NodeID
+        nodeObject[currentNode[0]] = node;
     }
-    // sessionStorage.setItem(imageIndex, imageBlob);
-}
+    let nodeJson = JSON.stringify(nodeObject, null, "  ");
+    // console.log(nodeJson);
 
-function sessionImageRetrieve(imageIndex: string): string{
-    // Returns the image in a url form, can be used as an <img> src to render the image directly from the url
-    console.log("sessionImageRetrieve() invoked");
-
-    // Retrieve the Base64 url
-    let retrievedData = sessionStorage.retrieveItem(imageIndex);
-    // Return that bad boy
-    return retrievedData;
-
+    // Store nodeJson under same name
+    sessionStorage.setItem("nodeJson", nodeJson);
+    console.log("Graph Nodes successfully stored as JSON");
+    console.log("GetMap() complete")
 }
