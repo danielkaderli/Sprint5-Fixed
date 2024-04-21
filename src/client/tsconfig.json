@@ -1,4 +1,9 @@
 {
+    "compilerOptions": {
+        "target": "es6",
+        "module": "ESNext",
+        "moduleResolution": "node",
+    },
     "files": [
         "./typescript/comms.ts",
         "./typescript/main_menu.ts",
