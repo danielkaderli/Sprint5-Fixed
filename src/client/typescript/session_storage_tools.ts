@@ -1,9 +1,8 @@
-export default {};
 // TOOLS FOR MAKING BRAIN HURT LESS WHEN DEALING WITH IMAGES
 // I don't want to completely redo the way typescript is currently handled, so cannot offload these to another file
 // Would be good for future refactoring though
-export function sessionImageStore(imageIndex: string, imageData: Blob): void{
-    console.log("sessionImageStore() invoked");
+function sessionImageStore(imageIndex: string, imageData: Blob): void{
+    // console.log("sessionImageStore() invoked");
     
     // Convert the data to Base64
     const reader = new FileReader();
@@ -17,21 +16,25 @@ export function sessionImageStore(imageIndex: string, imageData: Blob): void{
             base64string = decoder.decode(base64string);
         }else{
             base64string = (base64string as string);
-            console.log(base64string)
+            // console.log(base64string)
         }
 
         // Store the Base64 data
         sessionStorage.setItem(imageIndex, base64string);
+        // console.log("Image stored");
+
     }
     // sessionStorage.setItem(imageIndex, imageBlob);
 }
 
-export function sessionImageRetrieve(imageIndex: string): string{
+function sessionImageRetrieve(imageIndex: string): string{
     // Returns the image in a url form, can be used as an <img> src to render the image directly from the url
-    console.log("sessionImageRetrieve() invoked");
+    // console.log("sessionImageRetrieve() invoked");
 
     // Retrieve the Base64 url
     let retrievedData = sessionStorage.retrieveItem(imageIndex);
+    // console.log("Image retrieved");
+
     // Return that bad boy
     return retrievedData;
 
