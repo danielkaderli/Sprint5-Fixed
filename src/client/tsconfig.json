@@ -5,7 +5,7 @@
         "./typescript/map_page.ts",
         "./typescript/settings.ts",
         "./typescript/directions.ts",
-        "./typescript/image_storage_tools.ts"
+        "./typescript/session_storage_tools.ts"
         // The following are anticipated changes
         // "./typescript/text_size.ts",
         // "./typescript/user_pref.ts"
