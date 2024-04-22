@@ -98,5 +98,30 @@ async function getMap(mapname: string) {
     // Store nodeJson under same name
     sessionStorage.setItem("nodeJson", nodeJson);
     console.log("Graph Nodes successfully stored as JSON");
-    console.log("GetMap() complete")
+    console.log("GetMap() complete");
+}
+
+async function getPath(startID: string, endID: string) {
+    // Requests the path for the specified path
+    console.log("getPath() invoked");
+
+    // Request the outline data for the building
+    let labels = { start: startID, end: endID };
+    let url = "http://localhost:8080/maprequest"
+
+    const pathResponse = await fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(labels),
+    })
+
+    const pathData = await pathResponse.json();
+    console.log(pathData);
+    // Store pathResponse under same name
+    sessionStorage.setItem("pathData", pathData);
 }

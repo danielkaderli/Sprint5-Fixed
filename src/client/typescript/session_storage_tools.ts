@@ -29,12 +29,8 @@ function sessionImageStore(imageIndex: string, imageData: Blob): void{
 
 function sessionImageRetrieve(imageIndex: string): string{
     // Returns the image in a url form, can be used as an <img> src to render the image directly from the url
-    // console.log("sessionImageRetrieve() invoked");
-
-    // Retrieve the Base64 url
     let retrievedData = sessionStorage.retrieveItem(imageIndex);
-    // console.log("Image retrieved");
-
+    
     // Return that bad boy
     return retrievedData;
 
