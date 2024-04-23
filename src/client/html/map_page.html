@@ -43,7 +43,7 @@
 		</div>
 		
 		<!-- Map Display -->
-		<div class="nav-content" id="content">
+		<div class="nav-content" id="content" class="ignore">
 			<!-- I'm the map, I'm the map, I'm the map, I'm the map, I'm the map! -->
 			<div id="nav-map" style="height:1000px"></div>
 		</div>
@@ -61,7 +61,7 @@
 		<img src="../media/ChairQuest_menu_icon.png" style="width:100px; height:100px;">
 	</button>
 	
-	<script src="../map_page.js"></script>
+	<script src="../typescript/map_page.js"></script>
 	<script>
 		var map = L.map('nav-map', {crs: L.CRS.Simple}).setView([0, 0], 1);
 		var imageUrl = '../media/ChairQuest_Union_3rd_floor.png',
@@ -70,8 +70,12 @@
 			map.fitBounds(imageBounds);
 		map.zoomControl.setPosition('bottomright');
 	</script>
-	<script src="text_size.js"></script>
-	<script src="user_pref.js"></script>
+	<!-- <script src="../typescript/text_size.js"></script> -->
+	<script src="../typescript/voiceover.js"></script>
+	<script src="../typescript/user_pref.js"></script>
+	<script>
+
+	</script>
 </body>
 
 </html>
