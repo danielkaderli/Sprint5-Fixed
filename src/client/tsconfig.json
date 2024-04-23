@@ -11,7 +11,7 @@
         "./typescript/settings.ts",
         "./typescript/directions.ts",
         "./typescript/session_storage_tools.ts",
-        "./typescript/menus.ts",
+        "./typescript/location_menu.ts",
         // The following are anticipated changes
         // "./typescript/text_size.ts",
         // "./typescript/user_pref.ts"
