@@ -13,7 +13,7 @@ h1{
 	color: white;
 }
 p{
-	border: 2px solid powderblue;
+	/* border: 2px solid powderblue; */
 }
 
 .settings-container{
@@ -98,6 +98,91 @@ p{
 	background-color: transparent;
 	border: none;
 	cursor: pointer;
+}
+
+/* Generic top title bar */
+.title-bar{
+	background-color: #080808;
+
+	display:flex;
+
+	position:fixed;
+	top: 0;
+	left: 0;
+	height: 150px;
+	width:100vw;
+
+	align-items: center;
+	padding-left:50px;
+
+	font-size: 70px;
+	font-weight:bolder;
+	font-size: 100;
+	color: white;
+}
+
+
+/* For menus in choose_destination and choose_location */
+div.location-menu{
+	margin-top:150px;
+	margin-bottom:0;
+
+	width: 100vw;
+	height: calc(100vh - 150px);
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	overflow: scroll;
+	scroll-behavior: smooth;
+
+	/* Disappear the scrollbar */
+	-ms-overflow-style: none;  /* Internet Explorer 10+ */
+	scrollbar-width: none;  /* Firefox */
+}
+div.location-menu::-webkit-scrollbar { 
+	display: none;  /* Safari and Chrome */
+}
+div.location-menu-item{
+	display:flex;
+	align-items: center;
+
+	height: 200px;
+	margin: 0px;
+	padding-left: 10vw;
+
+	background-color: #282828;
+	border-top: 1px solid black;
+	
+	font-size: 70px;
+	font-weight:bold;
+	font-size: 100;
+	color: #CCCCCC;
+
+	transition: 0.25s ease-in-out;
+}
+div.location-menu-item:hover{
+	background-color:#484848;
+	color: white;
+	padding-left:calc(10vw - 20px);
+	font-weight:bolder;
+}
+.location-menu-item.active{
+	display:flex;
+	align-items: center;
+
+	height: 200px;
+	margin: 0px;
+	padding-left: calc(10vw - 20px);
+
+	background-color: #484848;
+	border-top: 1px solid black;
+	
+	font-size: 70px;
+	font-weight:bolder;
+	font-size: 100;
+	color: white;
+
+	transition: 0.25s ease-in-out;
 }
 
 /* toggle slider */
