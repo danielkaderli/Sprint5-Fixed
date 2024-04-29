@@ -56,13 +56,12 @@
 
 
 
-
-	
 	<script src="../typescript/comms.js"></script>
 	<script src="../typescript/map_page.js"></script>
 	<script>
-		// A global variable that keeps track of active paths on the screen between calls of addPathToMap()
+		// A global variable that keeps track of active paths on the screen between calls of addPathToMap
 		var pathLayers = [];
+		var currentFloor;
 
 		function changeFloor(floorNum){
 			// Find floor of active node
@@ -94,7 +93,6 @@
 		}
 		function addPathToMap(){
 			let pathLayerGroup = L.layerGroup();
-
 
 			console.log("addPathToMap() invoked:");
 			// Clear any lines currently on the map
