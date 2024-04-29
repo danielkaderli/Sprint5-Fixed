@@ -12,7 +12,7 @@
 			<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
 		</button>
 	</a>
-	<a href="../html/settings.html">	
+	<a href="../html/settings.html">
 		<button id="main-menu-settings-button" class="button-floating" style="right:0; top:0;">
 			<img src="../media/ChairQuest_settings_icon.png" style="width:100px; height:100px;">
 		</button>
@@ -25,7 +25,8 @@
 	<script>
 		// Request map and related nodes when next page visited
 		// document.getElementById("main-menu-next-button").onclick = () => getMap("Union");
-		document.getElementById("main-menu-next-button").onclick = getMap("Union");
+		sessionStorage.clear();
+		document.getElementById("main-menu-next-button").onclick = getMap("Town Hall");
 	</script>
 </body>
 </html>
