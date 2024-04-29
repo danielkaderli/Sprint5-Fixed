@@ -2,9 +2,6 @@ async function getMap(mapname: string) {
     // Retrieves the floor images, node list, and other data for the specified building
     console.log("getMap() invoked");
 
-    // Hardcoded building name for now
-    mapname = "Town Hall";
-
     // Request the outline data for the building
     let labels = {map: mapname};
     let url = "http://localhost:8080/maprequest"
@@ -21,14 +18,30 @@ async function getMap(mapname: string) {
         body: JSON.stringify(labels),
     })
 
-    const buildingData = await buildingResponse.json();
-    // console.log(buildingData);
+
+    const buildingReader = buildingResponse.body.getReader();
+    let finished: any = false;
+    let graphCode;
+    let i = 0;
+    await buildingReader.read().then(({ done, value }) => {
+        finished = done;
+        if(!done){
+            graphCode = value;
+        }
+    });
+    let buildingData = new TextDecoder().decode(graphCode);
+    buildingData = buildingData.trim();
+
+
+    // const buildingData = await JSON.parse(buildingResponse.body);
+    console.log("getMap(): buildingData:\n" + buildingData);
     // Store buildingData under same name
     sessionStorage.setItem("buildingData", buildingData);
 
+    let buildingInfo = await JSON.parse(buildingData);
     // Request floor images
-    for (let floor in buildingData["Floors"]) {
-        let url = "http://localhost:8080/images/" + buildingData["Floors"][floor]["FloorMap"];
+    for (let floor in buildingInfo["Floors"]) {
+        let url = "http://localhost:8080/images/" + buildingInfo["Floors"][floor]["FloorMap"];
         // console.log("URL: " + url);
 
         const floorResponse = await fetch(url, {
@@ -42,12 +55,12 @@ async function getMap(mapname: string) {
         })
         // Store document locally, stored as url that can be used directly in <img> src properties
         let imageBlob = await floorResponse.blob();
-        sessionImageStore(buildingData["Floors"][floor], imageBlob);
+        sessionImageStore("Floor " + JSON.stringify(buildingInfo["Floors"][floor]["FloorNumber"]), imageBlob);
     }
 
     // Request graph of the building
-    url = "http://localhost:8080/images/" + buildingData["Building Information"]["GraphNodes"];
-    console.log(url);
+    url = "http://localhost:8080/images/" + buildingInfo["Building Information"]["GraphNodes"];
+    console.log("getMap():\n" + url);
 
     const nodesResponse = await fetch(url, {
         method: 'GET',
@@ -59,12 +72,12 @@ async function getMap(mapname: string) {
         }
     })
 
-    console.log("Extracting Graph Nodes...");
+    console.log("getMap():\nExtracting Graph Nodes...");
     // Extract the graph nodes & convert them into JSON
     const nodesReader = nodesResponse.body.getReader();
-    let finished: any = false;
-    let graphCode;
-    let i = 0;
+    // finished: any = false;
+    graphCode = null;
+    i = 0;
     await nodesReader.read().then(({ done, value }) => {
         finished = done;
         if(!done){
@@ -97,8 +110,8 @@ async function getMap(mapname: string) {
 
     // Store nodeJson under same name
     sessionStorage.setItem("nodeJson", nodeJson);
-    console.log("Graph Nodes successfully stored as JSON");
-    console.log("GetMap() complete");
+    console.log("getMap():\nGraph Nodes successfully stored as JSON");
+    console.log("getMap():\nGetMap() complete");
 }
 
 async function getPath(startID: string, endID: string) {
@@ -120,8 +133,19 @@ async function getPath(startID: string, endID: string) {
         body: JSON.stringify(labels),
     })
 
-    const pathData = await pathResponse.json();
-    console.log(pathData);
+    const pathReader = pathResponse.body.getReader();
+    let finished: any = false;
+    let pathList;
+    let i = 0;
+    await pathReader.read().then(({ done, value }) => {
+        finished = done;
+        if(!done){
+            pathList = value;
+        }
+    });
+    let pathData = new TextDecoder().decode(pathList);
+    // pathData = await JSON.parse(pathData.trim());
+    // console.log(pathData);
     // Store pathResponse under same name
     sessionStorage.setItem("pathData", pathData);
 }
