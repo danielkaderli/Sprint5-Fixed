@@ -2,11 +2,18 @@
     "name": "chairquest",
     "description": "A wheelchair-accessible indoors navigator",
     "type": "module",
+    "main": "map_page.ts",
+    "private": "true",
     "scripts": {
         "build": "tsc --build",
         "clean": "find . -name '*.ts' -exec sh -c 'rm -f ${0%.ts}.js' {} \\;"
     },
     "dependencies": {
+        "@types/leaflet": "^1.9.12",
         "typescript": "^5.5.0-dev.20240418"
+    },
+    "devDependencies": {
+        "leaflet": "^1.9.4",
+        "ts-loader": "^9.5.1"
     }
 }
