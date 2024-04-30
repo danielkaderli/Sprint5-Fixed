@@ -25,9 +25,6 @@ function deactivateVoiceover(){
 function readScreenElements(textContent){
     var synthesis = window.speechSynthesis;
 
-    // Extract text from HTML divs
-    // var allDivsText = extractTextFromDivs();
-
     // If text is not empty, record in console and read text
     if(textContent){
         console.log("Text for voiceover reading: ", textContent);
@@ -46,6 +43,7 @@ function handleMouseOver(event) {
         // Retrieve the element that triggered the mouseover event
         var element = event.target;
         if(event.target.alt){
+            console.log(event .target.alt);
             let altText = event.target.alt;
             var textContent = '';
             if (altText && altText.trim() !== '') {
@@ -53,12 +51,13 @@ function handleMouseOver(event) {
             }
         }
 
-        element = element.parentElement;
+        //element = element.parentElement;
 
         if(!element.classList.contains('ignore')){
             // Get the text content of the element and trim whitespace
             textContent += element.textContent.trim();
-            textContent = textContent.replace(/(\r\n|\n|\r|\t)/gm,"");
+            textContent = textContent.replace(/(\r\n|\n|\r|\t)|/gm,"");
+            textContent = textContent.replace("undefined", "");
 
             // Call the voiceover function with the text content
             readScreenElements(textContent);
@@ -93,10 +92,6 @@ function playButton() {
     console.log('done playing buttoning');
 }
 
-// Attach event listeners to detect mouse hover and mouse out events
-//document.addEventListener('mouseover', handleMouseOver);
-//document.addEventListener('mouseout', handleMouseOut);
-
 function extractTextFromDivs() {
 
     var titles = document.getElementsByClassName("nav-sidebar-title");
@@ -114,52 +109,4 @@ function extractTextFromDivs() {
     console.log(divText);
     return divText;
 
-    ////////////////////////////////////////////
-
-    // var divText = '';
-    // Get all div elements in the document
-    // document.querySelectorAll('div').forEach((div) =>{
-    //     divText += div.textContent;
-    // });
-
-    //////////////////////////////////////
-
-    // // Iterate through each div element
-    // for (var i = 0; i < divs.length; i++) {
-
-    //     // add ignore tag to div elements not to be read by voiceover
-    //     if (divs[i].classList.contains('ignore')) {
-    //         continue; // Skip to the next iteration
-    //     }
-
-    //     var textContent = divs[i].textContent.trim();
-
-    //     // If text content is not empty, add it to the concatenated string
-    //     if (textContent) {
-    //         // Add a space between div texts for readability
-    //         divText += textContent + ' ';
-    //     }
-    //     setTimeout(1000);
-    // }
-
-    // Return the concatenated text content of all divs
-    // return divText.trim(); 
 }
-
-// // Execute the following code when the window is fully loaded
-// window.onload = function() {
-//     // Retrieve the user's preference for voiceover from localStorage
-//     var voiceoverPreference = localStorage.getItem('voiceover');
-//     if (voiceoverPreference === 'activated') {
-
-//         // Call the activateVoiceover function
-//         activateVoiceover();
-
-//     } else {
-
-//         // Call the deactivateVoiceover function
-//         deactivateVoiceover();
-        
-//     }
-
-// };
