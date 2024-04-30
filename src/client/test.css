@@ -12,10 +12,45 @@ h1{
 	background-color: black;
 	color: white;
 }
+
+
 p{
 	/* border: 2px solid powderblue; */
 }
 
+.main-menu-container{
+	display:flex;
+
+    align-items:center;
+    justify-content:center;
+    position:absolute;
+    height: 100%;
+	width: 100%;
+}
+.main-menu-heading{
+	font-size: 140px;
+	color: white;
+	font-weight: bolder;
+	
+	opacity: 0; /* Start with opacity zero */
+	transform: translateY(50px); /* Start slightly below the final position */
+	transition: opacity 1s, transform 1s;
+}
+
+.invert-on-hover {
+	transition: filter 0.3s; /* Add a transition for smooth effect */
+}
+
+/* Apply the invert filter on hover */
+.invert-on-hover:hover {
+	filter: invert(10%);
+	filter: blur(5px);
+}
+
+.fade-in{
+	opacity: 1;
+	transform: translateY(0);
+}
 .settings-container{
 	display:flex;
 	flex-direction:column;
