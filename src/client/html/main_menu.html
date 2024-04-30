@@ -6,15 +6,21 @@
 	
 </head>
 <body>
+
+	<div class="main-menu-container">
+		<div class="main-menu-heading">
+			ChairQuest
+			</div>
+	</div>
 	
 	<a href="../html/choose_destination_menu.html">	
-		<button id="main-menu-next-button" class="button-floating" style="right:0; bottom:0;">
-			<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
+		<button id="main-menu-next-button" class="button-floating invert-on-hover" style="right:0; bottom:0;">
+			<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;" alt="Choose Destination">
 		</button>
 	</a>
 	<a href="../html/settings.html">
-		<button id="main-menu-settings-button" class="button-floating" style="right:0; top:0;">
-			<img src="../media/ChairQuest_settings_icon.png" style="width:100px; height:100px;">
+		<button id="main-menu-settings-button" class="button-floating invert-on-hover" style="right:0; top:0;">
+			<img src="../media/ChairQuest_settings_icon.png" style="width:100px; height:100px;" alt="Settings Page">
 		</button>
 	</a>
 
@@ -44,5 +50,17 @@
 			getMap("TownHall");
 		}
 	</script>
+	<script>
+		// Wait for the DOM content to load
+		document.addEventListener('DOMContentLoaded', function() {
+			// Get the element you want to animate
+			const element = document.querySelector('.main-menu-heading');
+			// Add the class to trigger the animation
+			element.classList.add('fade-in');
+		});
+	</script>
+	<script src="../typescript/voiceover.js"></script>
+	<script src="../typescript/user_pref.js"></script>
+"
 </body>
 </html>
