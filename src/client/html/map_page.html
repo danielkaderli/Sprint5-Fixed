@@ -30,27 +30,38 @@
 					<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
 				</button>
 			</div>
+
 		</div>
 		
 		<!-- Map Display -->
-		<div class="nav-content" id="content">
+		<div class="nav-content ignore" id="content">
 			<!-- I'm the map, I'm the map, I'm the map, I'm the map, I'm the map! -->
-			<div id="nav-map" style="height:1000px"></div>
+			<div class="ignore" id="nav-map" style="height:1000px"></div>
 		</div>
 	</div>
 	<!-- Right buttons -->
 	<button id="map-button-exit" class="button-floating" style="right: 0;">
-		<img src="../media/ChairQuest_close_icon.png" style="width:100px; height:100px;">
+		<img src="../media/ChairQuest_close_icon.png" style="width:100px; height:100px;" alt="Map exit">
 	</button>
+
+	<button id="voiceover-play" class="button-floating" style="right: 0; top: 120px;" onclick="playButton()">
+		<img src="../media/ChairQuest_play_button.png" style="width:100px; height:100px;" alt="Voiceover play">
+	</button>
+
+	<button id="voiceover-pause" class="button-floating" style="right: 0; top: 240px;" onclick="window.speechSynthesis.cancel()">
+		<img src="../media/ChairQuest_pause_button.png" style="width:100px; height:100px;" alt="Voiceover pause">
+	</button>
+	
 	<button id="map-button-toggle-map" class="button-floating" style="right: 120px;" onclick="toggleMap()">
-		<img src="../media/ChairQuest_map_icon.png" style="width:100px; height:100px;">
+		<img src="../media/ChairQuest_map_icon.png" style="width:100px; height:100px;" alt="toggle map">
 	</button>
 	<!-- Left buttons -->
 	<!-- Collapse sidebar -->
 	<button id="map-button-collapse-sidebar" class="button-floating" style="left: 25%;" onclick="toggleSidebar()">
-		<img src="../media/ChairQuest_menu_icon.png" style="width:100px; height:100px;">
+		<img src="../media/ChairQuest_menu_icon.png" style="width:100px; height:100px;" alt="toggle instructions">
 	</button>
 	
+
 
 
 
@@ -86,6 +97,7 @@
 			let imageBounds = L.latLngBounds(cornerOne, cornerTwo);
 
 			// console.log("imageUrl: " + imageUrl + ", imageBounds: " + imageBounds);
+
 			L.imageOverlay(imageUrl, imageBounds).addTo(map);
 			map.fitBounds(imageBounds);
 
@@ -213,6 +225,11 @@
 	<!-- <script src="../typescript/user_pref.js"></script> -->
 	<script>
 	</script>
+
+
+	<script src="../typescript/voiceover.js"></script>
+	<script src="../typescript/user_pref.js"></script>
+
 </body>
 
 </html>
