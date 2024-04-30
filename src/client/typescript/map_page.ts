@@ -56,7 +56,7 @@ function toggleMap(): void {
 }
 
 function getCurrentFloor(): number{
-	console.log("getCurrentFloor() invoked");
+	// console.log("getCurrentFloor() invoked");
 	let items = document.getElementsByClassName("nav-sidebar-item");
 	// console.log("Length of items: " + items.length);
 	if(!items){
@@ -89,12 +89,14 @@ function getCurrentFloor(): number{
 
 async function addNodesToSidebar(){
 	let pathData = await JSON.parse(sessionStorage.getItem("pathData"));
-
+	let timeSum = 0;
 	// console.log("addNodesToSidebar:()");
 	// console.log(pathData);
 
 	for (let node in pathData){
-		newSidebarItem("Est. time: " + pathData[node]["TimeEstimate"] + "s", "Node " + node, pathData[node]["NodeID"]);
+		if(pathData[node]["typeCurr"] !== "TRANSITION"){
+			newSidebarItem("Est. time: " + pathData[node]["TimeEstimate"] + "s", "Node " + node, pathData[node]["NodeID"]);
+		}
 	}
 }
 function nextStep(): void{
