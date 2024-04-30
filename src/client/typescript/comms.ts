@@ -191,6 +191,8 @@ async function getPath(startID: string, endID: string) {
             pathList = value;
         }
     });
+
+
     let pathData = new TextDecoder().decode(pathList);
     // pathData = await JSON.parse(pathData.trim());
     // console.log(pathData);
