@@ -18,28 +18,19 @@
 		<!-- Sidebar -->
 		<div class="nav-sidebar" id="sidebar" style="display:null">
 			<!-- List of Directions -->
-			<div class="nav-sidebar-item nav-sidebar-active">
-				<div class="nav-sidebar-title">Here</div>
-				<div class="nav-sidebar-body">We go</div>
-			</div>
-			<div class="nav-sidebar-item">
-				<div class="nav-sidebar-title">This is</div>
-				<div class="nav-sidebar-body">The next instruction</div>
-			</div>
-			<div class="nav-sidebar-item">
-				<div class="nav-sidebar-title">And here's</div>
-				<div class="nav-sidebar-body">The one after that</div>
+			
+			<div class="nav-button-holder">
+				<!-- Navigation buttons at bottom of sidebar -->
+				<!-- Last instruction button -->
+				<button role="last instruction" id="sidebar-button-last" class="button-floating" style="left: 0; bottom: 0; position:absolute;">
+					<img src="../media/ChairQuest_back_icon.png" style="width:100px; height:100px;">
+				</button>
+				<!-- Next instruction button -->
+				<button role="next instruction" id="sidebar-button-next" class="button-floating" style="right: 0; bottom: 0; position:absolute;">
+					<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
+				</button>
 			</div>
 
-			<!-- Navigation buttons at bottom of sidebar -->
-			<!-- Last instruction button -->
-			<button role="last instruction" id="sidebar-button-last" class="button-floating" style="left: 0; bottom: 0;">
-				<img src="../media/ChairQuest_back_icon.png" style="width:100px; height:100px;" alt="Last instruction">
-			</button>
-			<!-- Next instruction button -->
-			<button role="next instruction" id="sidebar-button-next" class="button-floating" style="right: 0; bottom: 0">
-				<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;" alt="Next instruction">
-			</button>
 		</div>
 		
 		<!-- Map Display -->
@@ -70,21 +61,175 @@
 		<img src="../media/ChairQuest_menu_icon.png" style="width:100px; height:100px;" alt="toggle instructions">
 	</button>
 	
+
+
+
+
+
+
+	<script src="../typescript/comms.js"></script>
 	<script src="../typescript/map_page.js"></script>
-	<script class="ignore">
-		var map = L.map('nav-map', {crs: L.CRS.Simple}).setView([0, 0], 1);
-		var imageUrl = '../media/ChairQuest_Union_3rd_floor.png',
-    		imageBounds = [[-100, -100], [100, 100]];
+	<script>
+		// A global variable that keeps track of active paths on the screen between calls of addPathToMap
+		var pathLayers = [];
+		var currentFloor;
+
+		function changeFloor(floorNum){
+			// Find floor of active node
+			let currentFloor = getCurrentFloor();
+			if(!currentFloor){
+				if(currentFloor === 0){
+					currentFloor
+				}
+				console.error("currentFloor not valid");
+			}
+
+			// Retrieve proper png for floor
+			// console.log("Getting map for floor " + currentFloor);
+			floorURL = sessionStorage.getItem("Floor " + currentFloor);
+			// console.log(floorURL);
+
+
+			// Set it up on the map
+			let imageUrl = floorURL;
+			let cornerOne = L.latLng(-100, -100);
+			let cornerTwo = L.latLng(100, 100);
+			let imageBounds = L.latLngBounds(cornerOne, cornerTwo);
+
+			// console.log("imageUrl: " + imageUrl + ", imageBounds: " + imageBounds);
+
 			L.imageOverlay(imageUrl, imageBounds).addTo(map);
 			map.fitBounds(imageBounds);
-		map.zoomControl.setPosition('bottomright');
+
+			map.zoomControl.setPosition('bottomleft');
+		}
+		function addPathToMap(){
+			let pathLayerGroup = L.layerGroup();
+
+			console.log("addPathToMap() invoked:");
+			// Clear any lines currently on the map
+
+			// Get each node on path
+			let items = document.getElementsByClassName("nav-sidebar-item");
+			if(!items){ console.error("addPathToMap(): items not retrieved"); }
+			let pathData = JSON.parse(sessionStorage.getItem("pathData"));
+			if(!pathData){ console.error("addPathToMap(): pathData not extracted"); }
+			// console.log(pathData);
+
+
+			// Get the current floor
+			let currentFloor = getCurrentFloor();
+			if(!currentFloor){
+				console.error("addPathToMap(): currentFloor invalid");
+				// console.log("Found a transition node, item 0 floor number: " + pathData[items.item(0).id - 1]["floorCurr"]);
+				// currentFloor = pathData[items.item(1).id - 1]["floorCurr"]
+			}
+			// console.log("currentFloor: " + currentFloor);
+
+			// Run through each visible node in path
+			let prevNode = null;
+			let itemsLength = items.length;
+			let i = 0;
+			let arrayPlace = 0;
+			let Latitudes_and_Longitudes = [];
+			for (i = 0; i < itemsLength; i++){
+				// console.log("addPathToMap():\nIn loop, item id:\n" + items.item(i).id + "\ni: " + i);
+				Latitudes_and_Longitudes[arrayPlace] = [];
+
+				if(items.item(i).style.display !== 'none'){ // && pathData[items.item(0).id - 1]["floorCurr"] == currentFloor){
+					
+					Latitudes_and_Longitudes[arrayPlace][0] = parseFloat(pathData[parseInt(items.item(0).id) + i - 1]["RenderXCurr"]);
+					Latitudes_and_Longitudes[arrayPlace][1] = parseFloat(pathData[parseInt(items.item(0).id) + i - 1]["RenderYCurr"]);
+
+					prevNode = items.item(i);
+					arrayPlace ++;
+				}
+			}
+			console.log("Latitudes_and_longitudes:\n" + Latitudes_and_Longitudes);
+			
+			// Clear the old path, add in a new one
+			map.eachLayer((layer) => {
+				if(pathLayers.includes(layer)){
+					console.log("Found a path");
+					map.removeLayer(layer)
+				}
+			})
+			// Check if pathLayers is valid
+			if(!pathLayers.length){
+				if(pathLayers.length === 0){
+					console.log("pathLayers length is 0");
+				}else{
+					console.error("pathLayers is invalid");
+				}
+			}
+			
+			pathLayers[0] = L.polyline(Latitudes_and_Longitudes, {color:'red'});
+			pathLayers[0].addTo(map);
+		}
 	</script>
+
+	<!-- THIS INITIALIZES THE PAGE -->
+	<script>
+		
+		var map = L.map('nav-map', {crs: L.CRS.Simple}).setView([0, 0], 1);
+
+		// Loads the initial map
+		console.log("Location: " + sessionStorage.getItem("location"));
+		console.log("Destination: " + sessionStorage.getItem("destination"));
+		getPath(sessionStorage.getItem("location"), sessionStorage.getItem("destination"));
+
+		// Add event listeners for the various buttons on the page
+		document.getElementById("sidebar-button-last").onclick = () => { 
+			lastStep();
+			addPathToMap();
+			changeFloor();
+		};
+		document.getElementById("sidebar-button-next").onclick = () => { 
+			nextStep();
+			addPathToMap();
+			changeFloor();
+		};
+
+
+		const loadNodesInSidebarID = setInterval(checkForLoad, 1000);
+		const changeFloorID = setInterval(checkFloor, 1000);
+		const addPathID = setInterval(checkForAddPath, 1000);
+		
+		function checkForLoad(){
+			// console.log("chekcing");
+			if(sessionStorage.getItem("pathData") != null && sessionStorage.getItem("Floor 2") != null){
+				clearInterval(loadNodesInSidebarID);
+				// console.log("Checking if the pathData has loaded");
+				addNodesToSidebar();
+			}
+		}
+		function checkFloor(){
+			if(document.getElementsByClassName("nav-sidebar-item")){
+				clearInterval(changeFloorID);
+				// console.log("Checking the floor");
+				changeFloor();
+			}
+		}
+		function checkForAddPath(){
+			if(document.getElementsByClassName("nav-sidebar-item") && sessionStorage.getItem("pathData")){
+				clearInterval(addPathID);
+				addPathToMap();
+			}
+		}
+		// Print path
+		// console.log(sessionStorage.getItem("pathData"));
+		
+		
+	</script>
+	<!-- <script src="../typescript/text_size.js"></script> -->
+	<!-- <script src="../typescript/user_pref.js"></script> -->
+	<script>
+	</script>
+
 
 	<script src="../typescript/voiceover.js"></script>
 	<script src="../typescript/user_pref.js"></script>
-	<script>
 
-	</script>
 </body>
 
 </html>
