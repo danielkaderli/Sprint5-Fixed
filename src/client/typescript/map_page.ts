@@ -78,7 +78,15 @@ function getCurrentFloor(): number{
 
 		const currentNodeId = firstVisibleItem.getAttribute("id");
 		if (currentNodeId && floorPathData[currentNodeId]) {
-			const currentFloor = floorPathData[currentNodeId]["floorCurr"];
+			// Access the current floor
+			// If the current Node is a transition node, get the floor value of the previous node
+			let currentFloor;
+			if(floorPathData[currentNodeId]["typeCurr"] == "TRANSITION"){
+				currentFloor = floorPathData[parseInt(currentNodeId) - 1]["floorCurr"];
+			}else{
+				// Otherwise be normal
+				currentFloor = floorPathData[parseInt(currentNodeId)]["floorCurr"];
+			}
 			console.log("Current Floor: " + currentFloor);
 			return currentFloor;
 		}
@@ -95,7 +103,13 @@ async function addNodesToSidebar(){
 
 	for (let node in pathData){
 		if(pathData[node]["typeCurr"] !== "TRANSITION"){
-			newSidebarItem("Est. time: " + pathData[node]["TimeEstimate"] + "s", "Node " + node, pathData[node]["NodeID"]);
+
+			// Make the very last node look pretty
+			if(pathData[node]["typeCurr"] !== "FINAL"){
+				newSidebarItem("Est. time: " + pathData[node]["TimeEstimate"] + "s", "Node " + node, pathData[node]["NodeID"]);
+			}else if(parseInt(node) == (pathData.length - 1)){
+				newSidebarItem("You have arrived!", "You have reached your destination", pathData[node]["NodeID"]);
+			}
 		}
 	}
 }
@@ -126,12 +140,12 @@ function lastStep(): void{
 		// If the current item isn't the first item in the list
 		if(currentItem.style.display !== 'none' && i !== 1){
 			let itemToUnhide = document.getElementById((i - 1).toString());
-			itemToUnhide.style.display = 'block';
+			itemToUnhide.style.display = 'flex';
 			console.log("lastStep():\nDone!");
 			return;
 		}
 		i++;
 	}
 	let itemToUnhide = document.getElementById((i - 1).toString());
-	itemToUnhide.style.display = 'block';
+	itemToUnhide.style.display = 'flex';
 }
