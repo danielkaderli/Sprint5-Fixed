@@ -72,14 +72,14 @@
 	<script>
 		// A global variable that keeps track of active paths on the screen between calls of addPathToMap
 		var pathLayers = [];
-		var currentFloor;
+		var currentFloorImage = [];
 
 		function changeFloor(floorNum){
 			// Find floor of active node
 			let currentFloor = getCurrentFloor();
 			if(!currentFloor){
 				if(currentFloor === 0){
-					currentFloor
+					// currentFloor
 				}
 				console.error("currentFloor not valid");
 			}
@@ -96,15 +96,25 @@
 			let cornerTwo = L.latLng(100, 100);
 			let imageBounds = L.latLngBounds(cornerOne, cornerTwo);
 
-			// console.log("imageUrl: " + imageUrl + ", imageBounds: " + imageBounds);
-
-			L.imageOverlay(imageUrl, imageBounds).addTo(map);
+			// Clear the old image
+			map.eachLayer((layer) => {
+				if(currentFloorImage.includes(layer)){
+					// console.log("Removing old floor image");
+					map.removeLayer(layer);
+				}
+			});
+			map.zoomControl.setPosition('bottomleft');
 			map.fitBounds(imageBounds);
 
-			map.zoomControl.setPosition('bottomleft');
+			// console.log("imageUrl: " + imageUrl + ", imageBounds: " + imageBounds);
+			if(imageUrl){
+				currentFloorImage[0] = L.imageOverlay(imageUrl, imageBounds);
+				currentFloorImage[0].addTo(map);
+			}
+
 		}
 		function addPathToMap(){
-			let pathLayerGroup = L.layerGroup();
+			// let pathLayerGroup = L.layerGroup();
 
 			console.log("addPathToMap() invoked:");
 			// Clear any lines currently on the map
@@ -114,44 +124,47 @@
 			if(!items){ console.error("addPathToMap(): items not retrieved"); }
 			let pathData = JSON.parse(sessionStorage.getItem("pathData"));
 			if(!pathData){ console.error("addPathToMap(): pathData not extracted"); }
-			// console.log(pathData);
+			
+			console.log("addPathToMap(): pathData:\n" + JSON.stringify(pathData, null, 3));
 
 
 			// Get the current floor
 			let currentFloor = getCurrentFloor();
 			if(!currentFloor){
 				console.error("addPathToMap(): currentFloor invalid");
-				// console.log("Found a transition node, item 0 floor number: " + pathData[items.item(0).id - 1]["floorCurr"]);
-				// currentFloor = pathData[items.item(1).id - 1]["floorCurr"]
 			}
 			// console.log("currentFloor: " + currentFloor);
 
 			// Run through each visible node in path
 			let prevNode = null;
 			let itemsLength = items.length;
-			let i = 0;
 			let arrayPlace = 0;
 			let Latitudes_and_Longitudes = [];
-			for (i = 0; i < itemsLength; i++){
-				// console.log("addPathToMap():\nIn loop, item id:\n" + items.item(i).id + "\ni: " + i);
-				Latitudes_and_Longitudes[arrayPlace] = [];
-
-				if(items.item(i).style.display !== 'none'){ // && pathData[items.item(0).id - 1]["floorCurr"] == currentFloor){
+			for (let j = 0; j < itemsLength; j++){
+				var pathDataItemIndex = parseInt(items.item(j).id) - 1;
+				// if item is visible
+				// and the floor of that node is part of the current floor
+				
+				if(items.item(j).style.display !== 'none' 
+				&& pathData[pathDataItemIndex]["floorCurr"] == currentFloor 
+				&& pathData[pathDataItemIndex]["typeCurr"] !== "TRANSITION"){
+					// console.log("pathData[" + pathDataItemIndex + "][\"FloorCurr\"]: " + pathData[pathDataItemIndex]["floorCurr"]);
+					// console.log("Adding node " + pathData[pathDataItemIndex]["NodeID"])
+					Latitudes_and_Longitudes[arrayPlace] = [];
 					
-					Latitudes_and_Longitudes[arrayPlace][0] = parseFloat(pathData[parseInt(items.item(0).id) + i - 1]["RenderXCurr"]);
-					Latitudes_and_Longitudes[arrayPlace][1] = parseFloat(pathData[parseInt(items.item(0).id) + i - 1]["RenderYCurr"]);
+					Latitudes_and_Longitudes[arrayPlace][0] = pathData[pathDataItemIndex]["RenderXCurr"];
+					Latitudes_and_Longitudes[arrayPlace][1] = pathData[pathDataItemIndex]["RenderYCurr"];
 
-					prevNode = items.item(i);
 					arrayPlace ++;
 				}
 			}
-			console.log("Latitudes_and_longitudes:\n" + Latitudes_and_Longitudes);
+			// console.log("Latitudes_and_longitudes:\n" + Latitudes_and_Longitudes);
 			
 			// Clear the old path, add in a new one
 			map.eachLayer((layer) => {
-				if(pathLayers.includes(layer)){
-					console.log("Found a path");
-					map.removeLayer(layer)
+				if(pathLayers[0] && pathLayers.includes(layer)){
+					// console.log("Found a path");
+					map.removeLayer(layer);
 				}
 			})
 			// Check if pathLayers is valid
@@ -165,12 +178,13 @@
 			
 			pathLayers[0] = L.polyline(Latitudes_and_Longitudes, {color:'red'});
 			pathLayers[0].addTo(map);
+			console.log("Current Node: " + Latitudes_and_Longitudes[0][0] + ", " + Latitudes_and_Longitudes[0][1]);
 		}
 	</script>
 
 	<!-- THIS INITIALIZES THE PAGE -->
 	<script>
-		
+		var refreshMapItemsID;
 		var map = L.map('nav-map', {crs: L.CRS.Simple}).setView([0, 0], 1);
 
 		// Loads the initial map
@@ -181,22 +195,29 @@
 		// Add event listeners for the various buttons on the page
 		document.getElementById("sidebar-button-last").onclick = () => { 
 			lastStep();
-			addPathToMap();
-			changeFloor();
+			if(!refreshMapItemsID){
+				refreshMapItemsID = setInterval(refreshPathAndFloor, 200);
+			}
 		};
 		document.getElementById("sidebar-button-next").onclick = () => { 
 			nextStep();
+			if(!refreshMapItemsID){
+				refreshMapItemsID = setInterval(refreshPathAndFloor, 200);
+			}
+		};
+		function refreshPathAndFloor(){
+			clearInterval(refreshMapItemsID);
+			refreshMapItemsID = null;
 			addPathToMap();
 			changeFloor();
-		};
+		}
 
-
-		const loadNodesInSidebarID = setInterval(checkForLoad, 1000);
-		const changeFloorID = setInterval(checkFloor, 1000);
-		const addPathID = setInterval(checkForAddPath, 1000);
+		// Ensures that all components on the page load properly
+		const loadNodesInSidebarID = setInterval(checkForLoad, 500);
+		const changeFloorID = setInterval(checkFloor, 500);
+		const addPathID = setInterval(checkForAddPath, 2000);
 		
 		function checkForLoad(){
-			// console.log("chekcing");
 			if(sessionStorage.getItem("pathData") != null && sessionStorage.getItem("Floor 2") != null){
 				clearInterval(loadNodesInSidebarID);
 				// console.log("Checking if the pathData has loaded");
@@ -216,8 +237,6 @@
 				addPathToMap();
 			}
 		}
-		// Print path
-		// console.log(sessionStorage.getItem("pathData"));
 		
 		
 	</script>
