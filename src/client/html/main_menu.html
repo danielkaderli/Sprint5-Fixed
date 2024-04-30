@@ -12,8 +12,8 @@
 			<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
 		</button>
 	</a>
-	<a href="../html/settings.html">	
-			<button id="main-menu-settings-button" class="button-floating" style="right:0; top:0;">
+	<a href="../html/settings.html">
+		<button id="main-menu-settings-button" class="button-floating" style="right:0; top:0;">
 			<img src="../media/ChairQuest_settings_icon.png" style="width:100px; height:100px;">
 		</button>
 	</a>
@@ -21,9 +21,28 @@
 	<!-- TODO: fix this by figuring out typescript or fixing javascript -->
 	<!-- <script src="../typescript/main_menu.js"></script> -->
 	<script src="../typescript/comms.js"></script>
+	<script src="../typescript/session_storage_tools.js"></script>
 	<script>
 		// Request map and related nodes when next page visited
-		document.getElementById("main-menu-next-button").onclick = getMap("Union");
+		// document.getElementById("main-menu-next-button").onclick = () => getMap("Union");
+		sessionStorage.clear();
+		getBuildings();
+		var FirstID = setInterval(firstGet, 10000);
+		var SecondID = setInterval(secondGet, 21000);
+		// var ThirdID = setInterval(thirdGet, 3000);
+		
+		function firstGet(){
+			clearInterval(FirstID);
+			getMap("University Union");
+		}
+		function secondGet(){
+			clearInterval(SecondID);
+			getMap("Town Hall");
+		}
+		function thirdGet(){
+			clearInterval(ThirdID);
+			getMap("TownHall");
+		}
 	</script>
 </body>
 </html>

@@ -1,23 +1,30 @@
-function newSidebarItem(title: string, body: string): void {
+function newSidebarItem(title: string, body: string, nodeId = null): void {
 	let sidebar = document.getElementById("sidebar");
 	
-	//Create & style entry title
+	// Create & style entry title
 	let entry_title = document.createElement("div");
 	entry_title.className = "nav-sidebar-title";
 	entry_title.textContent = title;
 	
-	//Create & style entry body
+	// Create & style entry body
 	let entry_body = document.createElement("div");
 	entry_body.className = "nav-sidebar-body";
 	entry_body.textContent = body;
 	
 	let entry = document.createElement("div");
 	entry.className = "nav-sidebar-item";
+	if(nodeId !== null){
+		entry.setAttribute("data-nodeid", nodeId);
+	}
 	
 	entry.appendChild(entry_title);
 	entry.appendChild(entry_body);
+
+	// Count how many instructions already exist and assign a proper id (starting at 1)
+	let instructions = document.getElementsByClassName("nav-sidebar-item");
+	entry.id = (instructions.length + 1).toString();
 	
-	let element = document.getElementById("sidebar-button-last");
+	let element = document.getElementById("nav-button-holder");
 
 	sidebar?.insertBefore(entry, element);
 }
@@ -46,4 +53,83 @@ function toggleMap(): void {
 		map.style.display = "none";
 		sidebartoggle.style.display = "none";
 	}
+}
+
+function getCurrentFloor(): number{
+	console.log("getCurrentFloor() invoked");
+	let items = document.getElementsByClassName("nav-sidebar-item");
+	// console.log("Length of items: " + items.length);
+	if(!items){
+		console.error("getCurrentFloor(): items collection invalid");
+	}
+
+	// Find the first item that is still visible
+	const firstVisibleItem = Array.from(items).find((item) => { 
+		return document.getElementById(item.id).style.display !== 'none';
+	});
+	if(!firstVisibleItem){
+		console.error("getCurrentFloor(): valid visible item not found");
+	}
+
+	if(firstVisibleItem){
+		const floorPathData = JSON.parse(sessionStorage.getItem("pathData"));
+		// console.log("floorPathData:");
+		// console.log(floorPathData);
+
+		const currentNodeId = firstVisibleItem.getAttribute("id");
+		if (currentNodeId && floorPathData[currentNodeId]) {
+			const currentFloor = floorPathData[currentNodeId]["floorCurr"];
+			console.log("Current Floor: " + currentFloor);
+			return currentFloor;
+		}
+	}
+	console.log("getCurrentFloor: returning null");
+	return null;
+}
+
+async function addNodesToSidebar(){
+	let pathData = await JSON.parse(sessionStorage.getItem("pathData"));
+
+	// console.log("addNodesToSidebar:()");
+	// console.log(pathData);
+
+	for (let node in pathData){
+		newSidebarItem("Est. time: " + pathData[node]["TimeEstimate"] + "s", "Node " + node, pathData[node]["NodeID"]);
+	}
+}
+function nextStep(): void{
+	let items = document.getElementsByClassName("nav-sidebar-item");
+	// Find the first item that is still visible
+	let toHide = null;
+	for (let item of items as HTMLCollectionOf<HTMLDivElement>){
+		if(item.style.display !== 'none'){
+			toHide = item;
+			break;
+		}
+	}
+	if(toHide !== null){
+		toHide.style.display = 'none';
+	}else{
+		// console.log("nextStep():\nDone!");
+	}
+}
+function lastStep(): void{
+	let items = document.getElementsByClassName("nav-sidebar-item");
+	// Find the first item that is still visible
+	let indicator = null;
+	let i = 1;
+	for (let item of items as HTMLCollectionOf<HTMLDivElement>){
+		let currentItem = document.getElementById(i.toString())
+
+		// If the current item isn't the first item in the list
+		if(currentItem.style.display !== 'none' && i !== 1){
+			let itemToUnhide = document.getElementById((i - 1).toString());
+			itemToUnhide.style.display = 'block';
+			console.log("lastStep():\nDone!");
+			return;
+		}
+		i++;
+	}
+	let itemToUnhide = document.getElementById((i - 1).toString());
+	itemToUnhide.style.display = 'block';
 }
