@@ -1,12 +1,61 @@
+async function getBuildings(){
+    // console.log("getBuildings() invoked");
+
+    let url = "http://localhost:8080/buildings"
+    
+    console.log("getBuildings():\n" + JSON.stringify({
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }, null, 3));
+    
+    const buildingsResponse = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const buildingsReader = buildingsResponse.body.getReader();
+    let graphCode;
+    let i = 0;
+    await buildingsReader.read().then(({ done, value }) => {
+        if(!done){
+            graphCode = value;
+        }
+    });
+    let buildingData = new TextDecoder().decode(graphCode);
+    buildingData = buildingData.trim();
+
+    console.log(buildingData);
+    console.log("getBuildings() complete");
+}
+
 async function getMap(mapname: string) {
     // Retrieves the floor images, node list, and other data for the specified building
-    console.log("getMap() invoked");
+    console.log("getMap(" + mapname + ") invoked");
 
-    // Request the outline data for the building
+    console.log("Requesting outline data...");
+    // Request the outline data for the building //
     let labels = {map: mapname};
     let url = "http://localhost:8080/maprequest"
-    // let request = new Request(url, );
-
+    console.log(JSON.stringify({
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(labels),
+    }, null, 3));
+    
     const buildingResponse = await fetch(url, {
         method: 'POST',
         mode: 'cors',
@@ -17,7 +66,6 @@ async function getMap(mapname: string) {
         },
         body: JSON.stringify(labels),
     })
-
 
     const buildingReader = buildingResponse.body.getReader();
     let finished: any = false;
@@ -32,17 +80,18 @@ async function getMap(mapname: string) {
     let buildingData = new TextDecoder().decode(graphCode);
     buildingData = buildingData.trim();
 
-
-    // const buildingData = await JSON.parse(buildingResponse.body);
-    console.log("getMap(): buildingData:\n" + buildingData);
     // Store buildingData under same name
     sessionStorage.setItem("buildingData", buildingData);
+    // console.log("getMap(): buildingData:\n" + buildingData);
 
+    // Used in next segment
     let buildingInfo = await JSON.parse(buildingData);
+
+
     // Request floor images
+    // console.log("Requesting floor images...");
     for (let floor in buildingInfo["Floors"]) {
         let url = "http://localhost:8080/images/" + buildingInfo["Floors"][floor]["FloorMap"];
-        // console.log("URL: " + url);
 
         const floorResponse = await fetch(url, {
             method: 'GET',
@@ -59,9 +108,8 @@ async function getMap(mapname: string) {
     }
 
     // Request graph of the building
+    // console.log("Requesting graph of the building");
     url = "http://localhost:8080/images/" + buildingInfo["Building Information"]["GraphNodes"];
-    console.log("getMap():\n" + url);
-
     const nodesResponse = await fetch(url, {
         method: 'GET',
         mode: 'cors',
@@ -72,7 +120,7 @@ async function getMap(mapname: string) {
         }
     })
 
-    console.log("getMap():\nExtracting Graph Nodes...");
+    // console.log("getMap():\nExtracting Graph Nodes...");
     // Extract the graph nodes & convert them into JSON
     const nodesReader = nodesResponse.body.getReader();
     // finished: any = false;
@@ -110,8 +158,8 @@ async function getMap(mapname: string) {
 
     // Store nodeJson under same name
     sessionStorage.setItem("nodeJson", nodeJson);
-    console.log("getMap():\nGraph Nodes successfully stored as JSON");
-    console.log("getMap():\nGetMap() complete");
+    // console.log("getMap():\nGraph Nodes successfully stored as JSON");
+    console.log("getMap(" + mapname + ") complete");
 }
 
 async function getPath(startID: string, endID: string) {
