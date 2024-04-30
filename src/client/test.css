@@ -62,8 +62,19 @@ p{
 }
 .nav-sidebar{
 	flex: 1 1 25%;
+	flex-direction: row;
 	background-color: #383838;
 	position: relative;
+
+	overflow-y: scroll;
+	scroll-behavior:smooth;
+
+	/* Disappear the scrollbar */
+	-ms-overflow-style: none;  /* Internet Explorer 10+ */
+	scrollbar-width: none;  /* Firefox */
+}
+.nav-sidebar::-webkit-scrollbar { 
+	display: none;  /* Safari and Chrome */
 }
 .nav-sidebar-active{
 	background-color: #484848;
@@ -75,17 +86,28 @@ p{
 	padding-top: 20px;
 	padding-left: 20px;
 	padding-bottom: 20px;
+	display: flex;
+	flex-direction: column;
 }
 
 .nav-sidebar-title{
 	font-size: 200%;
 	font-weight: bolder;
 	color: #EEEEEE;
+	margin-bottom: 4px;
 }
 .nav-sidebar-body{
 	font-size: 150%;
 	color: #CCCCCC;
+	margin-top: 4px;
 }
+
+.nav-button-holder{
+	position:absolute;
+	bottom:0;
+	width:25vw;
+}
+
 .nav-map{
 	position: relative;
 	background-color: none;
