@@ -69,8 +69,9 @@ p{
 	background-color: #484848;
 }
 .nav-sidebar-item{
-	max-height: 100px;
+	/* max-height: 100px; */
 
+	height: auto;
 	padding-top: 20px;
 	padding-left: 20px;
 	padding-bottom: 20px;
@@ -208,7 +209,7 @@ div.location-menu-item:hover{
 	flex-wrap: nowrap;
     justify-content: center; 
     align-items: center;
-	height: 50vh;
+	height: 30vh;
 	position: relative;
 }
 .toggle{
