@@ -26,23 +26,7 @@
 		// Request map and related nodes when next page visited
 		// document.getElementById("main-menu-next-button").onclick = () => getMap("Union");
 		sessionStorage.clear();
-		getBuildings();
-		var FirstID = setInterval(firstGet, 10000);
-		var SecondID = setInterval(secondGet, 21000);
-		// var ThirdID = setInterval(thirdGet, 3000);
-		
-		function firstGet(){
-			clearInterval(FirstID);
-			getMap("University Union");
-		}
-		function secondGet(){
-			clearInterval(SecondID);
-			getMap("Town Hall");
-		}
-		function thirdGet(){
-			clearInterval(ThirdID);
-			getMap("TownHall");
-		}
+		getMap("University Union");
 	</script>
 </body>
 </html>
