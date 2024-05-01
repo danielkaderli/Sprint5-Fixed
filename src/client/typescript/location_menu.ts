@@ -1,11 +1,10 @@
 // Retrieve nodes from session storage
 let nodeJson = JSON.parse(sessionStorage.getItem("nodeJson"));
-// console.log(nodeJson);
+
 // Add nodes to the item container
 for (let node in nodeJson){
     let nodeType = nodeJson[node]["Type"];
     if(nodeType == "FINAL"){
-        console.log(nodeJson[node]["Type"]);
         let newitem = document.createElement("div");
         newitem.className = "location-menu-item";
         newitem.textContent = node;
