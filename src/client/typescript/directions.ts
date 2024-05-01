@@ -25,28 +25,28 @@ edge: Edge;
         }
         //if the edge has a floor placeholder, there is no edge, and this is the final node
         if(this.edge.floor== -99){
-            directions = "You have reached your destination."
+            directions = "You have reached your destination.";
             return directions;
         }
         //if either the x or the y are the same, the user is not turning
         else if(this.xCoord == this.edge.xCoord || this.yCoord == this.edge.yCoord){
-             directions = " Continue straight "
+             directions = " Continue straight ";
             if (this.edge.type == Type.TRANSITION){
-                directions += " and call the elevator."
+                directions += " and call the elevator.";
             }
         }
         //if going from a larger to smaller X, or a smaller to larger Y, user turns left
         else if (this.xCoord>this.edge.xCoord || this.yCoord<this.edge.yCoord){
-            directions = "Turn left, and continue forward "
+            directions = "Turn left, and continue forward ";
             if (this.edge.type == Type.TRANSITION){
-                directions += " and call the elevator."
+                directions += " and call the elevator.";
             }
         }
         //if going from a smaller to larger X, or a larger to smaller Y, user turns right
         else if (this.xCoord<this.edge.xCoord||this.yCoord>this.edge.yCoord){
-            directions = "Turn right and continue forward "
+            directions = "Turn right and continue forward ";
             if (this.edge.type == Type.TRANSITION){
-                directions += " and call the elevator."
+                directions += " and call the elevator.";
             }
         }
         //give the directions to callee

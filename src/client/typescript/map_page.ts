@@ -36,7 +36,7 @@ function toggleSidebar(): void {
 	if (button && sidebar && maptoggle && sidebar?.style.display === "none"){	// Evaluates if sidebar exists, then if the property exists
 		sidebar.style.display = "";
 		maptoggle.style.display = "";
-		button.style.left = "25%"
+		button.style.left = "25%";
 	} else if (button && sidebar && maptoggle) {
 		sidebar.style.display = "none";
 		maptoggle.style.display = "none";
@@ -64,7 +64,7 @@ function getCurrentFloor(): number{
 	}
 
 	// Find the first item that is still visible
-	const firstVisibleItem = Array.from(items).find((item) => { 
+	const firstVisibleItem = Array.from(items).find((item) => {
 		return document.getElementById(item.id).style.display !== 'none';
 	});
 	if(!firstVisibleItem){
@@ -135,7 +135,7 @@ function lastStep(): void{
 	let indicator = null;
 	let i = 1;
 	for (let item of items as HTMLCollectionOf<HTMLDivElement>){
-		let currentItem = document.getElementById(i.toString())
+		let currentItem = document.getElementById(i.toString());
 
 		// If the current item isn't the first item in the list
 		if(currentItem.style.display !== 'none' && i !== 1){

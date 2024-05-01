@@ -1,8 +1,8 @@
 async function getBuildings(){
     // console.log("getBuildings() invoked");
 
-    let url = "http://localhost:8080/buildings"
-    
+    let url = "http://localhost:8080/buildings";
+
     console.log("getBuildings():\n" + JSON.stringify({
         method: 'GET',
         mode: 'cors',
@@ -12,7 +12,7 @@ async function getBuildings(){
             'Content-Type': 'application/json'
         }
     }, null, 3));
-    
+
     const buildingsResponse = await fetch(url, {
         method: 'GET',
         mode: 'cors',
@@ -42,9 +42,9 @@ async function getMap(mapname: string) {
     console.log("getMap(" + mapname + ") invoked");
 
     console.log("Requesting outline data...");
-    // Request the outline data for the building //
+    // Request the outline data for the building
     let labels = {map: mapname};
-    let url = "http://localhost:8080/maprequest"
+    let url = "http://localhost:8080/maprequest";
     console.log(JSON.stringify({
         method: 'POST',
         mode: 'cors',
@@ -55,7 +55,7 @@ async function getMap(mapname: string) {
         },
         body: JSON.stringify(labels),
     }, null, 3));
-    
+
     const buildingResponse = await fetch(url, {
         method: 'POST',
         mode: 'cors',
@@ -65,7 +65,7 @@ async function getMap(mapname: string) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(labels),
-    })
+    });
 
     const buildingReader = buildingResponse.body.getReader();
     let finished: any = false;
@@ -101,7 +101,7 @@ async function getMap(mapname: string) {
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
+        });
         // Store document locally, stored as url that can be used directly in <img> src properties
         let imageBlob = await floorResponse.blob();
         sessionImageStore("Floor " + JSON.stringify(buildingInfo["Floors"][floor]["FloorNumber"]), imageBlob);
@@ -118,7 +118,7 @@ async function getMap(mapname: string) {
         headers: {
             'Content-Type': 'application/json'
         }
-    })
+    });
 
     // console.log("getMap():\nExtracting Graph Nodes...");
     // Extract the graph nodes & convert them into JSON
@@ -168,7 +168,7 @@ async function getPath(startID: string, endID: string) {
 
     // Request the outline data for the building
     let labels = { start: startID, end: endID };
-    let url = "http://localhost:8080/maprequest"
+    let url = "http://localhost:8080/maprequest";
 
     const pathResponse = await fetch(url, {
         method: 'POST',
@@ -179,7 +179,7 @@ async function getPath(startID: string, endID: string) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(labels),
-    })
+    });
 
     const pathReader = pathResponse.body.getReader();
     let finished: any = false;

@@ -3,13 +3,13 @@
 // Would be good for future refactoring though
 function sessionImageStore(imageIndex: string, imageData: Blob): void{
     // console.log("sessionImageStore() invoked");
-    
+
     // Convert the data to Base64
     const reader = new FileReader();
     reader.readAsDataURL(imageData);
     reader.onloadend = function() {
-        let base64string = reader.result
-        
+        let base64string = reader.result;
+
         // Do type checking for TypeScript's sanity (apparently the 'string | ArrayBuffer' data type isn't 'string' enough)
         if(base64string instanceof ArrayBuffer){
             const decoder = new TextDecoder('utf-8');
@@ -30,8 +30,7 @@ function sessionImageStore(imageIndex: string, imageData: Blob): void{
 function sessionImageRetrieve(imageIndex: string): string{
     // Returns the image in a url form, can be used as an <img> src to render the image directly from the url
     let retrievedData = sessionStorage.retrieveItem(imageIndex);
-    
+
     // Return that bad boy
     return retrievedData;
-
 }

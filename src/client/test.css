@@ -198,7 +198,7 @@ div.location-menu{
 	-ms-overflow-style: none;  /* Internet Explorer 10+ */
 	scrollbar-width: none;  /* Firefox */
 }
-div.location-menu::-webkit-scrollbar { 
+div.location-menu::-webkit-scrollbar {
 	display: none;  /* Safari and Chrome */
 }
 div.location-menu-item{
@@ -264,7 +264,7 @@ div.location-menu-item:hover{
 	flex: 1;
 	flex-direction: column;
 	flex-wrap: nowrap;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
 	height: 30vh;
 	position: relative;
@@ -327,23 +327,23 @@ label {
 
 .slider {
     position: relative;
-    width: 180px; 
+    width: 180px;
     height: 102px;
 	margin-left: 30px;
 	background-color: red;
-	border-radius: 51px; 
+	border-radius: 51px;
     transition: background-color 0.4s; /* Adding transition effect for smooth color change */
 	cursor: pointer;
 }
 .slider:before {
     position: absolute;
     content: "";
-    height: 78px; 
-    width: 78px; 
-    left: 12px; 
-    bottom: 12px; 
-    background-color: white; 
-    border-radius: 50%; 
+    height: 78px;
+    width: 78px;
+    left: 12px;
+    bottom: 12px;
+    background-color: white;
+    border-radius: 50%;
 	-webkit-transition: .4s;
 	transition: .4s;
 }

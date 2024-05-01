@@ -11,7 +11,7 @@ for (let node in nodeJson){
         newitem.textContent = node;
 
         let itemContainer = document.getElementById("location-menu");
-        
+
         itemContainer.appendChild(newitem);
     }
 }
