@@ -87,7 +87,7 @@ function getCurrentFloor(): number{
 				// Otherwise be normal
 				currentFloor = floorPathData[parseInt(currentNodeId)]["floorCurr"];
 			}
-			console.log("Current Floor: " + currentFloor);
+			// console.log("Current Floor: " + currentFloor);
 			return currentFloor;
 		}
 	}
@@ -141,7 +141,7 @@ function lastStep(): void{
 		if(currentItem.style.display !== 'none' && i !== 1){
 			let itemToUnhide = document.getElementById((i - 1).toString());
 			itemToUnhide.style.display = 'flex';
-			console.log("lastStep():\nDone!");
+			// console.log("lastStep():\nDone!");
 			return;
 		}
 		i++;
