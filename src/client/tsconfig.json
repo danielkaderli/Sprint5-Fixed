@@ -8,12 +8,8 @@
         "typescript/comms.ts",
         "typescript/main_menu.ts",
         "typescript/map_page.ts",
-        "typescript/settings.ts",
         "typescript/directions.ts",
         "typescript/session_storage_tools.ts",
         "typescript/location_menu.ts",
-        // The following are anticipated changes
-        // "./typescript/text_size.ts",
-        // "./typescript/user_pref.ts"
     ]
 }
