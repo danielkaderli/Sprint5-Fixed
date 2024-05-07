@@ -24,12 +24,12 @@
 		<div class="nav-button-holder">
 			<!-- Navigation buttons at bottom of sidebar -->
 			<!-- Last instruction button -->
-			<button role="last instruction" id="sidebar-button-last" class="button-floating" style="left: 0; bottom: 0; position:absolute;">
-				<img src="../media/ChairQuest_back_icon.png" style="width:100px; height:100px;">
+			<button role="last instruction" id="sidebar-button-last" class="button-floating" style="left: 0; bottom: 0; position:absolute;" aria-label="Previous Instruction">
+				<img src="../media/ChairQuest_back_icon.png" style="width:100px; height:100px;" alt="Previous Instruction">
 			</button>
 			<!-- Next instruction button -->
-			<button role="next instruction" id="sidebar-button-next" class="button-floating" style="right: 0; bottom: 0; position:absolute;">
-				<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;">
+			<button role="next instruction" id="sidebar-button-next" class="button-floating" style="right: 0; bottom: 0; position:absolute;" aria-label="Next Instruction">
+				<img src="../media/ChairQuest_next_icon.png" style="width:100px; height:100px;" alt="Next Instruction">
 			</button>
 		</div>
 		
@@ -44,21 +44,21 @@
 		<img src="../media/ChairQuest_close_icon.png" style="width:100px; height:100px;" alt="Map exit">
 	</button>
 
-	<button id="voiceover-play" class="button-floating" style="right: 0; top: 120px;" onclick="playButton()">
+	<button id="voiceover-play" class="button-floating" style="right: 0; top: 120px;" onclick="playButton()" aria-label="Play Voiceover">
 		<img src="../media/ChairQuest_play_button.png" style="width:100px; height:100px;" alt="Voiceover play">
 	</button>
 
-	<button id="voiceover-pause" class="button-floating" style="right: 0; top: 240px;" onclick="window.speechSynthesis.cancel()">
+	<button id="voiceover-pause" class="button-floating" style="right: 0; top: 240px;" onclick="window.speechSynthesis.cancel()" aria-label="Pause Voiceover">
 		<img src="../media/ChairQuest_pause_button.png" style="width:100px; height:100px;" alt="Voiceover pause">
 	</button>
 	
-	<button id="map-button-toggle-map" class="button-floating" style="right: 120px;" onclick="toggleMap()">
-		<img src="../media/ChairQuest_map_icon.png" style="width:100px; height:100px;" alt="toggle map">
+	<button id="map-button-toggle-map" class="button-floating" style="right: 120px;" onclick="toggleMap()" aria-label="Toggle Map">
+		<img src="../media/ChairQuest_map_icon.png" style="width:100px; height:100px;" alt="Toggle Map">
 	</button>
 	<!-- Left buttons -->
 	<!-- Collapse sidebar -->
-	<button id="map-button-collapse-sidebar" class="button-floating" style="left: 25%;" onclick="toggleSidebar()">
-		<img src="../media/ChairQuest_menu_icon.png" style="width:100px; height:100px;" alt="toggle instructions">
+	<button id="map-button-collapse-sidebar" class="button-floating" style="left: 25%;" onclick="toggleSidebar()" aria-label="Toggle Instructions">
+		<img src="../media/ChairQuest_menu_icon.png" style="width:100px; height:100px;" alt="Toggle Instructions">
 	</button>
 	
 
