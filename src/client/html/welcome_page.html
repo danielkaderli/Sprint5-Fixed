@@ -3,6 +3,12 @@
 <head>
     <title>ChairQuest Welcome</title>
     <link rel="stylesheet" href="../test.css">
+    <style>
+        /* Style to increase contrast */
+        .toggle {
+            color: #333; /* Darker color for better contrast */
+        }
+    </style>
 </head>
 <body>
     <!-- TODO: RIP THIS WHOLE THING OUT AND REMAKE FROM SCRATCH -->
@@ -12,7 +18,7 @@
             ChairQuest <!-- Label for the toggle switch -->
         </label>
     
-    <a href="../html/main_menu.html">    
+    <a href="../html/main_menu.html" aria-label="Proceed to Main Menu"> <!-- Added aria-label for link purpose context -->
         <!-- Added alt text for accessibility -->
         <button id="main-menu-next-button" class="button-floating" style="right:0; bottom:0;">
             <img src="../media/ChairQuest_next_icon.png" alt="Next" style="width:100px; height:100px;">
